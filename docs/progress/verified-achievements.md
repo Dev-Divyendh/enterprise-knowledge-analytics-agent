@@ -39,6 +39,16 @@ convert planned architecture into completed work.
 - Executed strict Pyright checking with zero diagnostics after correcting test
   isolation.
 
+  ### Business domain and golden dataset v0
+
+- Defined a synthetic enterprise policy and expense-analytics domain.
+- Created golden dataset v0.1 containing 15 routing, grounding, clarification, and
+  refusal cases.
+- Recorded 8 policy-RAG, 3 Text-to-SQL, 2 clarification, and 2 refusal expectations.
+- Implemented strict Pydantic models with route-specific validation and duplicate-ID
+  rejection.
+- Passed four golden-dataset validation tests.
+
 ## Implemented but not fully verified
 
 - Module 0 knowledge validation is deferred pending review of the project owner's
@@ -70,6 +80,11 @@ substantial AI engineering accomplishments for a resume project bullet.
 | 2026-08-17 | Final Module 0 tests passed | 5/5 | Smoke and configuration tests |
 | 2026-08-17 | Module 0 statement coverage | 100% | 17 foundation statements |
 | 2026-08-17 | Final Module 0 test runtime | 0.11 seconds | Local Apple Silicon environment |
+| 2026-08-19 | Golden dataset cases | 15 | Version 0.1.0, specification-only |
+| 2026-08-19 | Golden dataset tests | 4/4 | Loader, routes, duplicates, SQL requirements |
+| 2026-08-19 | Total project tests | 9/9 | Module 0 and Module 1 |
+| 2026-08-19 | Project statement coverage | 93% | 74 statements, branch coverage enabled |
+| 2026-08-19 | Test-suite runtime | 0.12 seconds | Local Apple Silicon environment |
 
 ## Evidence limitations
 

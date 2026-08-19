@@ -16,7 +16,7 @@ Last updated: 2026-08-17
 
 | Module | Name | Status | Evidence |
 |---|---|---|---|
-| 0 | Repository foundation | In progress | Local command outputs and smoke test |
+| 1 | Repository foundation | In progress | Local command outputs and smoke test |
 | 1 | Business domain and golden dataset v0 | Planned | None |
 | 2 | PostgreSQL and pgvector foundation | Planned | None |
 | 3 | Document ingestion | Planned | None |
@@ -50,7 +50,20 @@ Last updated: 2026-08-17
 - [x] Create and test the application configuration foundation.
 - [x] Complete the Module 0 knowledge check.
 - [x] Run the final Module 0 quality gate.
-- [ ] Create the initial Git commit.
+- [x] Create the initial Git commit.
+
+## Module 1 checklist
+
+- [x] Define the fictional organization and system boundaries.
+- [x] Define the initial document corpus.
+- [x] Define approved and prohibited analytics.
+- [x] Define policy, analytics, clarification, and refusal routes.
+- [x] Create golden dataset v0.1 with 15 cases.
+- [x] Validate JSON syntax and unique case IDs.
+- [x] Implement a typed Pydantic golden-dataset loader.
+- [x] Enforce route-specific dataset requirements.
+- [x] Add and pass four dataset-validation tests.
+- [x] Record actual route distribution and test results.
 
 ## Current blockers
 
