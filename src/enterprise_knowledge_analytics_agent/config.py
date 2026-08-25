@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     debug: bool = False
     request_timeout_seconds: int = Field(default=30, ge=1, le=300)
     max_request_bytes: int = Field(default=1_048_576, ge=1_024)
+    database_url: str | None = None
+    database_echo: bool = False
 
 
 @lru_cache

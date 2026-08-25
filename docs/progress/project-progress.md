@@ -1,6 +1,6 @@
 # Project Progress Tracker
 
-Last updated: 2026-08-17
+Last updated: 2026-08-25
 
 ## Status definitions
 
@@ -16,9 +16,9 @@ Last updated: 2026-08-17
 
 | Module | Name | Status | Evidence |
 |---|---|---|---|
-| 1 | Repository foundation | In progress | Local command outputs and smoke test |
-| 1 | Business domain and golden dataset v0 | Planned | None |
-| 2 | PostgreSQL and pgvector foundation | Planned | None |
+| 0 | Repository foundation | Implemented and verified | 5 tests and initial Git commit |
+| 1 | Business domain and golden dataset v0 | Implemented and verified | 15 cases and 4 validation tests |
+| 2 | PostgreSQL and pgvector foundation | Implemented and verified | Migrations, permissions, seed data, and 8 integration tests |
 | 3 | Document ingestion | Planned | None |
 | 4 | Processing and chunking | Planned | None |
 | 5 | Embeddings and vector indexing | Planned | None |
@@ -64,6 +64,26 @@ Last updated: 2026-08-17
 - [x] Enforce route-specific dataset requirements.
 - [x] Add and pass four dataset-validation tests.
 - [x] Record actual route distribution and test results.
+
+## Module 2 checklist
+
+- [x] Run PostgreSQL through Docker Compose.
+- [x] Install and verify pgvector 0.8.6.
+- [x] Configure SQLAlchemy, Psycopg, and connection pooling.
+- [x] Configure Alembic migrations.
+- [x] Create document, version, processing, chunk, embedding, and evaluation tables.
+- [x] Create the separate `analytics` schema.
+- [x] Create department, employee, expense-report, and expense-item tables.
+- [x] Verify migration upgrade, downgrade, and re-upgrade behavior.
+- [x] Verify PostgreSQL full-text and pgvector column types.
+- [x] Create and test a least-privilege analytics reader role.
+- [x] Block salary access and database writes.
+- [x] Create deterministic, idempotent synthetic analytics data.
+- [x] Add and pass eight PostgreSQL integration tests.
+- [x] Record the PostgreSQL and pgvector architecture decision.
+- [x] Create the cumulative interview-question bank.
+- [ ] Complete the Module 2 interview knowledge check.
+- [ ] Create and push the Module 2 Git commit.
 
 ## Current blockers
 

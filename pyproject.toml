@@ -5,8 +5,12 @@ description = "A secure enterprise assistant for grounded document question answ
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "alembic>=1.19.1",
+    "pgvector>=0.5.0",
+    "psycopg[binary,pool]>=3.3.4",
     "pydantic>=2.13.4",
     "pydantic-settings>=2.15.0",
+    "sqlalchemy>=2.0.52",
 ]
 
 [project.scripts]
@@ -49,6 +53,9 @@ addopts = [
     "--strict-config",
     "--strict-markers",
     "-ra",
+]
+markers = [
+    "integration: requires the local PostgreSQL service",
 ]
 
 [tool.coverage.run]
