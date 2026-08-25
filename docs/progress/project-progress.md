@@ -82,8 +82,12 @@ Last updated: 2026-08-25
 - [x] Add and pass eight PostgreSQL integration tests.
 - [x] Record the PostgreSQL and pgvector architecture decision.
 - [x] Create the cumulative interview-question bank.
-- [ ] Complete the Module 2 interview knowledge check.
-- [ ] Create and push the Module 2 Git commit.
+- [x] Create and push the Module 2 Git commit.
+
+## Deferred project-wide knowledge review
+
+- [ ] Review the cumulative interview-question bank after implementation is complete.
+- [ ] Complete the final project knowledge exam before creating resume bullets.
 
 ## Current blockers
 
