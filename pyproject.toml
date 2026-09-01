@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "alembic>=1.19.1",
+    "docling>=2.121.0",
     "pgvector>=0.5.0",
     "psycopg[binary,pool]>=3.3.4",
     "pydantic>=2.13.4",
