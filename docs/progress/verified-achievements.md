@@ -152,6 +152,23 @@ general retrieval accuracy, production reliability, or scalability.
 - Generated reproducible dense Top-3, dense Top-5, and deterministic RAG JSON reports.
 - Passed all 42 tests with 81% statement coverage.
 
+### Lexical and hybrid retrieval comparison
+
+- Verified PostgreSQL full-text matching using the generated `chunks.search_vector`
+  and its existing GIN index.
+- Preserved the initial multi-term lexical baseline: Hit Rate@3 0.2143.
+- Measured OR-term lexical Top-3 on frozen v0.2: Hit Rate 1.0000, Recall 1.0000,
+  Precision 0.4286, MRR 0.7619.
+- Implemented RRF fusion over up to 10 dense and 10 lexical candidates, deduplicated
+  by chunk ID without comparing incompatible raw scores.
+- Measured hybrid Top-3: Hit Rate 1.0000, Recall 0.9643, Precision 0.3571,
+  MRR 0.8452.
+- Verified a real-database hybrid integration test recovers the expected KNO-014
+  section within Top-3.
+- Observed limitations: hybrid does not beat dense MRR, does not recover all
+  KNO-006 conflict evidence, and can rank malicious DOC-007 content first.
+- Passed 48 tests with 81% current coverage.
+
 ## Implemented but not fully verified
 
 - Module 0 knowledge validation is deferred pending review of the project owner's
@@ -159,35 +176,22 @@ general retrieval accuracy, production reliability, or scalability.
   - Module 2 implementation is verified, but the owner’s interview knowledge check has
   not yet been completed.
 
-## Planned
+### Planned
 
-PostgreSQL lexical retrieval, RRF hybrid comparison, safe Text-to-SQL, controlled
-LangGraph routing, structured logging, CI, and final portfolio packaging remain.
+Safe Text-to-SQL, controlled LangGraph routing, structured logging, CI, and final
+portfolio packaging remain. Integration of hybrid retrieval into the answer path
+would require separate abstention calibration and safety verification.
 
 PDF parsing, OCR, reranking, MLflow, authentication, load testing, cloud deployment,
-and complete application containerization remain optional or deferred.
+and complete application containerization are optional or deferred.
 
-## Planned
-
-Multi-document evaluation, PostgreSQL lexical retrieval, RRF hybrid retrieval,
-threshold calibration, malicious-document testing, SQL generation and `sqlglot`
-validation, controlled LangGraph routing, structured application logging, CI, and
-final portfolio packaging remain planned.
-
-Docling PDF parsing, OCR, table extraction, reranking, MLflow, authentication, load
-testing, and complete application containerization are optional under the revised
-interview-ready scope.
 
 ## Resume eligible
 
-- Built and evaluated a local enterprise RAG pipeline using structure-aware Markdown
-  ingestion, BGE-small embeddings, PostgreSQL/pgvector exact retrieval, grounded local
-  LLM generation, application-controlled citations, and evidence-based abstention.
-- Created a frozen 18-case evaluation dataset and measured Top-3/Top-5 retrieval,
-  citation correctness, abstention behavior, and one malicious-document scenario.
-
-These claims describe the current RAG subsystem only. Hybrid retrieval, Text-to-SQL,
-LangGraph orchestration, production scale, and deployment are not yet resume-eligible.
+The frozen dense-versus-lexical-versus-RRF retrieval comparison is defensible as a
+measured subsystem claim. Do not claim hybrid improved overall ranking quality or
+that it is already used by the FastAPI answer endpoint. Text-to-SQL, LangGraph,
+production scale, and deployment are not yet resume-eligible.
 
 ## Recorded measurements
 
@@ -240,6 +244,7 @@ LangGraph orchestration, production scale, and deployment are not yet resume-eli
 | 2026-09-15 | Complete citation recall rate | 0.8571 | Deterministic RAG Top-3 |
 | 2026-09-15 | Total project tests | 42/42 | Unit and integration tests |
 | 2026-09-15 | Current statement coverage | 81% | 1,239 statements |
+| 2026-09-15 | Total project tests | 48/48 | Lexical and hybrid unit/integration tests included |
 
 ## Evidence limitations
 
@@ -261,3 +266,8 @@ LangGraph orchestration, production scale, and deployment are not yet resume-eli
   `httpx` and `httpx2`.
 - No production-readiness, deployment, security-completeness, accuracy-at-scale, or
   load-performance claim is supported.
+  - Lexical and RRF retrieval have been evaluated offline; the FastAPI answer path
+  remains dense-only. Hybrid scores cannot use the current cosine-based 0.70
+  abstention threshold.
+- OR lexical retrieval broadens candidate coverage but also returns matches for
+  unsupported queries and may rank the malicious DOC-007 fixture first.

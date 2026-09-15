@@ -22,14 +22,14 @@ Last updated: 2026-09-15
 | 3 | Document ingestion | Partially implemented and verified | Six Markdown documents with extracted identities, hashing, persistence, and idempotency |
 | 4 | Processing and chunking | Partially implemented and verified | 35 structure-aware chunks across six documents |
 | 5 | Embeddings and vector indexing | Partially implemented and verified | 35 normalized BGE embeddings stored in pgvector |
-| 6 | Retrieval experiments | Partially implemented and verified | Measured exact-dense Top-3 and Top-5 baselines on frozen v0.2 |
+| 6 | Retrieval experiments | Partially implemented and verified | Frozen v0.2 comparison of exact dense, PostgreSQL full-text, and RRF hybrid Top-3 retrieval |
 | 7 | Grounded RAG | Partially implemented and verified | 18-case deterministic evaluation plus real Ollama prompt-injection demonstration |
 | 8 | Safe Text-to-SQL | Planned | Database and reader-role foundation only |
 | 9 | Controlled LangGraph workflow | Planned | None |
 | 10 | FastAPI and containerized service | Partially implemented and verified | Health, readiness, and RAG question endpoints |
 | 11 | Golden evaluation and MLflow | Partially implemented and verified | Frozen 18-case retrieval dataset and reproducible JSON reports; MLflow deferred |
 | 12 | Focused observability | Partially implemented | Scores, model/prompt versions, tokens, and selected latency values |
-| 13 | Focused testing and security | Partially implemented and verified | 42 passing tests, abstention checks, citation checks, and malicious-document regression |
+| 13 | Focused testing and security | Partially implemented and verified | 48 passing tests; lexical and hybrid real-PostgreSQL regressions plus existing RAG safety tests |
 | 14 | CI and portfolio packaging | Planned | Existing documentation only; CI not implemented |
 
 ## Module 0 checklist
@@ -73,6 +73,21 @@ Last updated: 2026-09-15
 
 Milestone 1 is implemented and verified. The next milestone is PostgreSQL lexical
 retrieval, RRF fusion, and comparison against these frozen dense baselines.
+## Interview-ready Milestone 2 — retrieval comparison
+
+- [x] Reuse the generated chunk `tsvector` column and GIN index.
+- [x] Implement and test PostgreSQL lexical retrieval on active document versions.
+- [x] Preserve the first AND-style lexical baseline: Hit Rate@3 0.2143.
+- [x] Evaluate OR-term lexical retrieval: Hit Rate@3 1.0000, Recall@3 1.0000, MRR 0.7619.
+- [x] Implement deterministic chunk-ID RRF fusion using 10 candidates per retriever.
+- [x] Evaluate hybrid Top-3: Hit Rate 1.0000, Recall 0.9643, MRR 0.8452.
+- [x] Verify the real hybrid path recovers KNO-014 within Top-3.
+- [x] Pass 48 tests with 81% coverage.
+
+Hybrid improved Top-3 evidence coverage relative to dense, but did not improve
+overall MRR. KNO-006 remains incomplete, and malicious DOC-007 content ranks first
+for KNO-008 and KNO-014 in some retrieval modes. The existing RAG answer endpoint
+still uses dense retrieval and its cosine-based abstention threshold.
 
 ## Module 2 checklist
 
