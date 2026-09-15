@@ -1,6 +1,6 @@
 # Verified Achievements Ledger
 
-Last updated: 2026-09-14
+Last updated: 2026-09-15
 
 This ledger records only capabilities supported by execution evidence. It does not
 convert planned architecture into completed work.
@@ -124,6 +124,34 @@ The `0.70` abstention threshold is provisional and must be calibrated using the
 expanded golden evaluation dataset. The successful examples do not establish
 general retrieval accuracy, production reliability, or scalability.
 
+### Small-corpus and RAG evaluation milestone
+
+- Created and ingested six synthetic Markdown policy documents with distinct validated
+  document identifiers.
+- Persisted 35 structure-aware chunks and 35 normalized 384-dimensional
+  `BAAI/bge-small-en-v1.5` embeddings.
+- Verified unchanged-document ingestion across all six documents.
+- Created frozen golden dataset v0.2 containing 18 policy-RAG cases: 14 answerable
+  and four unsupported.
+- Implemented transparent Hit Rate@K, Recall@K, Precision@K, MRR, citation, abstention,
+  LLM-call, and latency measurements.
+- Measured exact dense Top-3 retrieval: Hit Rate 0.9286, Recall 0.8929,
+  Precision 0.3333, and MRR 0.8929.
+- Measured exact dense Top-5 retrieval: Hit Rate 1.0000, Recall 0.9643,
+  Precision 0.2143, and MRR 0.9107.
+- Measured deterministic Top-3 RAG behavior: 100% supported-answer rate, 100%
+  unsupported abstention rate, 0.9286 citation hit rate, and 0.8571 complete citation
+  recall.
+- Verified that all four unsupported cases abstained without calling the LLM.
+- Verified that the malicious DOC-007 fixture was supplied as untrusted evidence under
+  explicit application safety instructions.
+- Manually demonstrated that local `qwen3.5:4b` answered the malicious-document case
+  using safe DOC-004 evidence without following the embedded instruction.
+- Preserved two known limitations: KNO-006 retrieved only part of the required conflict
+  evidence, and KNO-014 missed its expected section at Top-3.
+- Generated reproducible dense Top-3, dense Top-5, and deterministic RAG JSON reports.
+- Passed all 42 tests with 81% statement coverage.
+
 ## Implemented but not fully verified
 
 - Module 0 knowledge validation is deferred pending review of the project owner's
@@ -132,6 +160,12 @@ general retrieval accuracy, production reliability, or scalability.
   not yet been completed.
 
 ## Planned
+
+PostgreSQL lexical retrieval, RRF hybrid comparison, safe Text-to-SQL, controlled
+LangGraph routing, structured logging, CI, and final portfolio packaging remain.
+
+PDF parsing, OCR, reranking, MLflow, authentication, load testing, cloud deployment,
+and complete application containerization remain optional or deferred.
 
 ## Planned
 
@@ -146,10 +180,14 @@ interview-ready scope.
 
 ## Resume eligible
 
-None.
+- Built and evaluated a local enterprise RAG pipeline using structure-aware Markdown
+  ingestion, BGE-small embeddings, PostgreSQL/pgvector exact retrieval, grounded local
+  LLM generation, application-controlled citations, and evidence-based abstention.
+- Created a frozen 18-case evaluation dataset and measured Top-3/Top-5 retrieval,
+  citation correctness, abstention behavior, and one malicious-document scenario.
 
-The verified items above are development foundations rather than sufficiently
-substantial AI engineering accomplishments for a resume project bullet.
+These claims describe the current RAG subsystem only. Hybrid retrieval, Text-to-SQL,
+LangGraph orchestration, production scale, and deployment are not yet resume-eligible.
 
 ## Recorded measurements
 
@@ -189,32 +227,37 @@ substantial AI engineering accomplishments for a resume project bullet.
 | 2026-09-14 | Total project tests | 35/35 | Unit and integration tests |
 | 2026-09-14 | Current statement coverage | 86% | 936 statements; not final-system coverage |
 | 2026-09-14 | Full-suite runtime | 8.20 seconds | Local Apple Silicon environment |
+| 2026-09-15 | Frozen retrieval cases | 18 | v0.2.0: 14 answerable, 4 unsupported |
+| 2026-09-15 | Embedded corpus | 35/35 chunks | Six Markdown documents, BGE small v1.5 |
+| 2026-09-15 | Dense Hit Rate@3 | 0.9286 | Frozen v0.2 dataset |
+| 2026-09-15 | Dense Recall@3 | 0.8929 | Frozen v0.2 dataset |
+| 2026-09-15 | Dense MRR@3 | 0.8929 | Frozen v0.2 dataset |
+| 2026-09-15 | Dense Hit Rate@5 | 1.0000 | Frozen v0.2 dataset |
+| 2026-09-15 | Dense Recall@5 | 0.9643 | Frozen v0.2 dataset |
+| 2026-09-15 | Dense MRR@5 | 0.9107 | Frozen v0.2 dataset |
+| 2026-09-15 | Unsupported abstention rate | 1.0000 | Four deterministic cases |
+| 2026-09-15 | Citation hit rate | 0.9286 | Deterministic RAG Top-3 |
+| 2026-09-15 | Complete citation recall rate | 0.8571 | Deterministic RAG Top-3 |
+| 2026-09-15 | Total project tests | 42/42 | Unit and integration tests |
+| 2026-09-15 | Current statement coverage | 81% | 1,239 statements |
 
 ## Evidence limitations
 
-- Markdown is the only document format currently implemented and verified.
-- Docling parsing, PDF tables, and OCR are not implemented or verified.
-- Dense retrieval has been demonstrated on one document and one supported question;
-  no benchmark-level retrieval-quality claim is supported yet.
-- The `0.70` abstention threshold is provisional and has not been calibrated.
+- Markdown is the only document format implemented and verified.
+- Exact dense retrieval is evaluated only on a small synthetic 35-chunk corpus.
+- The observed latency measurements are local and do not establish production
+  performance or scalability.
+- Deterministic RAG evaluation measures application control behavior, not real-LLM
+  linguistic quality.
+- Real Qwen behavior has been manually demonstrated on selected cases, including one
+  malicious-document case, but not benchmarked across every golden case.
+- The `0.70` threshold separates the current 18 cases but is not universally reliable.
+- KNO-006 has incomplete conflict-evidence recall at Top-5.
+- KNO-014 misses its expected section at Top-3 despite exceeding the threshold.
 - PostgreSQL lexical retrieval and RRF hybrid retrieval are not implemented.
-- Retrieved text is labeled as untrusted evidence, but no malicious-document
-  end-to-end test has passed yet.
 - Safe Text-to-SQL and LangGraph routing are not implemented.
-- Structured logging, CI, and complete application containerization are not
-  implemented.
-- Current coverage applies to the present implementation and does not establish
-  production reliability.
-- The current FastAPI TestClient emits one upstream deprecation warning concerning
-  the transition from `httpx` to `httpx2`.
-- The RAG and FastAPI changes must be committed and pushed before the vertical slice
-  is preserved in the remote repository.
-
-- No document ingestion, OCR, parsing, chunk generation, or embedding generation has
-  been implemented.
-- No retrieval-quality, RAG, routing, or generated-SQL measurement exists.
-- Database results come from a local synthetic dataset, not production traffic.
-- The PostgreSQL reader is currently a non-login permission role; application login
-  credential provisioning remains planned for the Text-to-SQL module.
-- Current coverage applies only to the implemented foundation.
-- The repository has not yet been pushed to GitHub.
+- Structured logging and CI are not implemented.
+- The FastAPI TestClient currently emits one upstream transition warning concerning
+  `httpx` and `httpx2`.
+- No production-readiness, deployment, security-completeness, accuracy-at-scale, or
+  load-performance claim is supported.

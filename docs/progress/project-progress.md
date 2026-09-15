@@ -1,6 +1,6 @@
 # Project Progress Tracker
 
-Last updated: 2026-09-14
+Last updated: 2026-09-15
 
 ## Status definitions
 
@@ -19,17 +19,17 @@ Last updated: 2026-09-14
 | 0 | Repository foundation | Implemented and verified | 5 tests and initial Git commit |
 | 1 | Business domain and golden dataset v0 | Implemented and verified | 15 cases and 4 validation tests |
 | 2 | PostgreSQL and pgvector foundation | Implemented and verified | Migrations, permissions, seed data, and 8 integration tests |
-| 3 | Document ingestion | Partially implemented and verified | DOC-001 Markdown ingestion, hashing, persistence, and idempotency |
-| 4 | Processing and chunking | Partially implemented and verified | 7 structure-aware DOC-001 chunks and 3 unit tests |
-| 5 | Embeddings and vector indexing | Partially implemented and verified | 7 normalized BGE embeddings stored in pgvector |
-| 6 | Retrieval experiments | Partially implemented and verified | Exact dense retrieval baseline and integration test |
-| 7 | Grounded RAG | Partially implemented and verified | Real Ollama answer, citation, abstention, and 2 integration tests |
+| 3 | Document ingestion | Partially implemented and verified | Six Markdown documents with extracted identities, hashing, persistence, and idempotency |
+| 4 | Processing and chunking | Partially implemented and verified | 35 structure-aware chunks across six documents |
+| 5 | Embeddings and vector indexing | Partially implemented and verified | 35 normalized BGE embeddings stored in pgvector |
+| 6 | Retrieval experiments | Partially implemented and verified | Measured exact-dense Top-3 and Top-5 baselines on frozen v0.2 |
+| 7 | Grounded RAG | Partially implemented and verified | 18-case deterministic evaluation plus real Ollama prompt-injection demonstration |
 | 8 | Safe Text-to-SQL | Planned | Database and reader-role foundation only |
 | 9 | Controlled LangGraph workflow | Planned | None |
 | 10 | FastAPI and containerized service | Partially implemented and verified | Health, readiness, and RAG question endpoints |
-| 11 | Golden evaluation and MLflow | Partially implemented | Golden v0.1 exists; measured evaluation runner not implemented |
+| 11 | Golden evaluation and MLflow | Partially implemented and verified | Frozen 18-case retrieval dataset and reproducible JSON reports; MLflow deferred |
 | 12 | Focused observability | Partially implemented | Scores, model/prompt versions, tokens, and selected latency values |
-| 13 | Focused testing and security | Partially implemented and verified | 35 tests; citation, abstention, database permission tests |
+| 13 | Focused testing and security | Partially implemented and verified | 42 passing tests, abstention checks, citation checks, and malicious-document regression |
 | 14 | CI and portfolio packaging | Planned | Existing documentation only; CI not implemented |
 
 ## Module 0 checklist
@@ -52,18 +52,27 @@ Last updated: 2026-09-14
 - [x] Run the final Module 0 quality gate.
 - [x] Create the initial Git commit.
 
-## Module 1 checklist
+## Interview-ready Milestone 1 checklist
 
-- [x] Define the fictional organization and system boundaries.
-- [x] Define the initial document corpus.
-- [x] Define approved and prohibited analytics.
-- [x] Define policy, analytics, clarification, and refusal routes.
-- [x] Create golden dataset v0.1 with 15 cases.
-- [x] Validate JSON syntax and unique case IDs.
-- [x] Implement a typed Pydantic golden-dataset loader.
-- [x] Enforce route-specific dataset requirements.
-- [x] Add and pass four dataset-validation tests.
-- [x] Record actual route distribution and test results.
+- [x] Create a six-document synthetic Markdown corpus.
+- [x] Extract and validate unique `DOC-\d{3}` identifiers.
+- [x] Ingest all six documents idempotently.
+- [x] Persist 35 structure-aware chunks with source lineage.
+- [x] Persist 35 normalized BGE-small embeddings.
+- [x] Create and freeze golden dataset v0.2 with 18 policy cases.
+- [x] Include 14 answerable and four unsupported cases.
+- [x] Include conflict and malicious-document cases.
+- [x] Implement transparent retrieval metrics.
+- [x] Measure exact-dense Top-3 and Top-5 retrieval.
+- [x] Measure deterministic RAG behavior, citations, and abstention.
+- [x] Verify that all unsupported cases avoid the LLM.
+- [x] Verify one malicious-document case using deterministic controls.
+- [x] Manually verify the malicious case with real local `qwen3.5:4b`.
+- [x] Preserve known dense-retrieval failures for hybrid comparison.
+- [x] Pass the complete 42-test quality gate with 81% coverage.
+
+Milestone 1 is implemented and verified. The next milestone is PostgreSQL lexical
+retrieval, RRF fusion, and comparison against these frozen dense baselines.
 
 ## Module 2 checklist
 

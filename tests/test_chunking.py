@@ -14,7 +14,7 @@ def test_chunker_preserves_sections(tmp_path: Path) -> None:
     source = tmp_path / "policy.md"
     source.write_text(
         "# Leave Policy\n\n"
-        "Document ID: TEST-001\n\n"
+        "Document ID: DOC-901\n\n"
         "## Eligibility\n\n"
         "Full-time employees are eligible.\n\n"
         "## Paid Leave\n\n"
@@ -36,7 +36,12 @@ def test_chunker_preserves_sections(tmp_path: Path) -> None:
 def test_chunk_ids_are_stable(tmp_path: Path) -> None:
     source = tmp_path / "policy.md"
     source.write_text(
-        "# Leave Policy\n\n## Paid Leave\n\nEmployees receive 12 weeks.\n",
+        (
+            "# Leave Policy\n\n"
+            "Document ID: DOC-902\n\n"
+            "## Paid Leave\n\n"
+            "Employees receive 12 weeks.\n"
+        ),
         encoding="utf-8",
     )
     document = read_markdown_document(source)
@@ -53,7 +58,7 @@ def test_oversized_section_is_split(tmp_path: Path) -> None:
     source = tmp_path / "long-policy.md"
     long_text = " ".join(f"term-{number}" for number in range(400))
     source.write_text(
-        f"# Leave Policy\n\n## Long Section\n\n{long_text}\n",
+        (f"# Leave Policy\n\nDocument ID: DOC-903\n\n## Long Section\n\n{long_text}\n"),
         encoding="utf-8",
     )
     document = read_markdown_document(source)

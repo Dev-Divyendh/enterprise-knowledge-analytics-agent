@@ -10,6 +10,10 @@ from enterprise_knowledge_analytics_agent.ingestion.domain import (
 
 MAX_MARKDOWN_FILE_BYTES = 1_048_576
 HEADING_PATTERN = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
+DOCUMENT_ID_PATTERN = re.compile(
+    r"^Document ID:[ \t]*(DOC-\d{3})[ \t]*$",
+    re.MULTILINE,
+)
 
 
 class DocumentValidationError(ValueError):
@@ -20,6 +24,19 @@ def calculate_sha256(content: bytes) -> str:
     """Calculate a stable SHA-256 fingerprint for source bytes."""
 
     return hashlib.sha256(content).hexdigest()
+
+
+def _extract_external_id(text: str) -> str:
+    """Extract the required document identifier from Markdown metadata."""
+
+    match = DOCUMENT_ID_PATTERN.search(text)
+
+    if match is None:
+        raise DocumentValidationError(
+            "Markdown document must contain a Document ID such as DOC-001"
+        )
+
+    return match.group(1)
 
 
 def _element_id(content_hash: str, ordinal: int, text: str) -> str:
@@ -52,11 +69,19 @@ def read_markdown_document(path: Path) -> CanonicalDocument:
     content = resolved_path.read_bytes()
     content_hash = calculate_sha256(content)
 
+    # try:
+    #     text = content.decode("utf-8")
+    # except UnicodeDecodeError as error:
+    #     raise DocumentValidationError("Markdown document must use UTF-8") from error
+
+    # elements, title = _parse_markdown(text, content_hash)
+
     try:
         text = content.decode("utf-8")
     except UnicodeDecodeError as error:
         raise DocumentValidationError("Markdown document must use UTF-8") from error
 
+    external_id = _extract_external_id(text)
     elements, title = _parse_markdown(text, content_hash)
 
     if not elements:
@@ -72,7 +97,7 @@ def read_markdown_document(path: Path) -> CanonicalDocument:
         parser_version="1.0",
         elements=elements,
         metadata={
-            "external_id": "DOC-001",
+            "external_id": external_id,
             "source_filename": resolved_path.name,
         },
     )

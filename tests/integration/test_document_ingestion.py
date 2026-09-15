@@ -31,7 +31,12 @@ def test_unchanged_document_is_not_duplicated(
 ) -> None:
     source = tmp_path / "DOC-TEST.md"
     source.write_text(
-        "# Test Policy\n\n## Paid Leave\n\nEligible employees receive 12 weeks.\n",
+        (
+            "# Test Policy\n\n"
+            "Document ID: DOC-900\n\n"
+            "## Paid Leave\n\n"
+            "Eligible employees receive 12 weeks.\n"
+        ),
         encoding="utf-8",
     )
     source_uri = source.resolve().as_uri()

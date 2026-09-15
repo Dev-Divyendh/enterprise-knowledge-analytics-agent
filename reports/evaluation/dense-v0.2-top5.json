@@ -1,0 +1,1042 @@
+{
+  "dataset_name": "enterprise_agent_retrieval_golden",
+  "dataset_version": "0.2.0",
+  "retrieval_system": "exact_dense_cosine_bge_small_v1.5",
+  "top_k": 5,
+  "metrics": {
+    "evaluated_cases": 18,
+    "answerable_cases": 14,
+    "unsupported_cases": 4,
+    "hit_rate_at_k": 1.0,
+    "recall_at_k": 0.9642857142857143,
+    "precision_at_k": 0.21428571428571427,
+    "mean_reciprocal_rank": 0.9107142857142857,
+    "latency_p50_ms": 7.136,
+    "latency_p95_ms": 139.073,
+    "unsupported_top_score_min": 0.53628,
+    "unsupported_top_score_max": 0.632056,
+    "unsupported_top_score_mean": 0.599441
+  },
+  "cases": [
+    {
+      "case_id": "KNO-001",
+      "category": "direct_policy",
+      "query": "How many weeks of paid parental leave are available?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-001::Paid Parental Leave"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-001",
+          "section": "Paid Parental Leave",
+          "chunk_id": "948ce3b5c90d5321fcf145d50eea21c73d9a98e0d682897c728d7f579e133ad2",
+          "similarity_score": 0.87207,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-001",
+          "section": "Eligibility",
+          "chunk_id": "8875cb64b9e2090843e206e106103a76c752938c0eaf77c20d400af4d6d5219b",
+          "similarity_score": 0.803089,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-001",
+          "section": "Pay and Benefits",
+          "chunk_id": "57c176963d27da47cced92ab39c3b9cfaee6676fda5b01409893d85d87ef4bd9",
+          "similarity_score": 0.738376,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-001",
+          "section": "Notice and Documentation",
+          "chunk_id": "d6b70dbec59665a5a00acf433acdf72ee191e9143f4a051f715563d6f7026570",
+          "similarity_score": 0.702977,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-001",
+          "section": "Parental Leave Policy",
+          "chunk_id": "e3f4359768206450de67068f528291293ddf38f422f6b911c42df1fd42ed2a7e",
+          "similarity_score": 0.669876,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.87207,
+      "latency_ms": 139.073
+    },
+    {
+      "case_id": "KNO-002",
+      "category": "direct_policy",
+      "query": "Can I regularly work remotely from another state?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-002::Working from Another State"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-002",
+          "section": "Eligibility",
+          "chunk_id": "6b36c033c959d13de64bbfdfade96a37c327cf2af2842f729c50ea667d230af5",
+          "similarity_score": 0.739736,
+          "relevant": false
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-002",
+          "section": "Working from Another State",
+          "chunk_id": "18264b42b3a09c4a0bc4a26413517ad2e9324d2e7c2c2443c245eac0cf86e2bb",
+          "similarity_score": 0.738499,
+          "relevant": true
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-002",
+          "section": "International Remote Work",
+          "chunk_id": "8c0374f80a51c37c267192a3514aa320303188c5ab0ff952ffb2983e7bc530b1",
+          "similarity_score": 0.715849,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-005",
+          "section": "Previous Approval Rule",
+          "chunk_id": "8a9b9e4ec95715e94c6b2bd3dbcd84f93420df60a87f3c598c2673c59f00e196",
+          "similarity_score": 0.623418,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-002",
+          "section": "Security Requirements",
+          "chunk_id": "534debf79e81ebd9cc7c08ce2494aad67aed592222e06704f9347fb7e0448218",
+          "similarity_score": 0.618879,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 0.5,
+      "top_similarity_score": 0.739736,
+      "latency_ms": 8.273
+    },
+    {
+      "case_id": "KNO-003",
+      "category": "table_question",
+      "query": "What receipt is required for hotel reimbursement?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-003::Receipt Requirements"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-003",
+          "section": "Receipt Requirements",
+          "chunk_id": "492b07aaf17ac1085218c33d14b8d483fe0c55cf9faf46836ca2bb29554791db",
+          "similarity_score": 0.860494,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-003",
+          "section": "Reimbursement Limits",
+          "chunk_id": "0caaa83f73371b30db5e8fc6b3f2a015ba374a336fe5a4bf0370c4f9da5537d5",
+          "similarity_score": 0.743018,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-003",
+          "section": "Purpose",
+          "chunk_id": "00a988e33ab7b291b83b9beb978cf1a5544e8fad927869dbc3dd423940f783ba",
+          "similarity_score": 0.705198,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-003",
+          "section": "Travel and Expense Policy",
+          "chunk_id": "ed3593c586ee70be98b592967e9cf7bb3c4e2b476850f67dae3deca99cc430ba",
+          "similarity_score": 0.662063,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-003",
+          "section": "Booking Requirements",
+          "chunk_id": "3592976e358bf86dc3b36ad7f9bd9587e09de922c8b84defec25ab529d883600",
+          "similarity_score": 0.63528,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.860494,
+      "latency_ms": 7.979
+    },
+    {
+      "case_id": "KNO-004",
+      "category": "security_policy",
+      "query": "What should I do if I receive a suspected phishing email?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-004::Suspected Phishing Messages"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-004",
+          "section": "Suspected Phishing Messages",
+          "chunk_id": "f2ed41b20ebfd6aa6ce4867377db6539a7c4d1835768958a345a54834094a725",
+          "similarity_score": 0.822339,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-007",
+          "section": "Malicious Embedded Instructions",
+          "chunk_id": "4c697d39f01f1f48f274d9db0791b526397cc2c46ab65f799f80be027e8d47d6",
+          "similarity_score": 0.743543,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-007",
+          "section": "Expected Safe Handling",
+          "chunk_id": "de76113c3f2baee150383b343c6495a666e2b6fb0202fea032b37a1d613498bc",
+          "similarity_score": 0.740214,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-004",
+          "section": "Accidental Interaction",
+          "chunk_id": "a4139709818e985a9f642eb97c57b163cd6d193269d4f0d37be73a83a207fb32",
+          "similarity_score": 0.657288,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-007",
+          "section": "Untrusted Document Instructions — Security Test Fixture",
+          "chunk_id": "052032575618c7d6465917f9ca3cd179303e1b53f249dbcf827ee7276a7d88c5",
+          "similarity_score": 0.578312,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.822339,
+      "latency_ms": 7.606
+    },
+    {
+      "case_id": "KNO-005",
+      "category": "table_question",
+      "query": "What is the daily meal limit in a standard-cost city?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-003::Reimbursement Limits"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-003",
+          "section": "Reimbursement Limits",
+          "chunk_id": "0caaa83f73371b30db5e8fc6b3f2a015ba374a336fe5a4bf0370c4f9da5537d5",
+          "similarity_score": 0.778945,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-003",
+          "section": "Receipt Requirements",
+          "chunk_id": "492b07aaf17ac1085218c33d14b8d483fe0c55cf9faf46836ca2bb29554791db",
+          "similarity_score": 0.537794,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-003",
+          "section": "Booking Requirements",
+          "chunk_id": "3592976e358bf86dc3b36ad7f9bd9587e09de922c8b84defec25ab529d883600",
+          "similarity_score": 0.49937,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-003",
+          "section": "Purpose",
+          "chunk_id": "00a988e33ab7b291b83b9beb978cf1a5544e8fad927869dbc3dd423940f783ba",
+          "similarity_score": 0.482252,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-004",
+          "section": "Sensitive Information",
+          "chunk_id": "6ebbad1e709e875c78dc4f56d03659c132e07c10f3bce1055215352eb6b358ee",
+          "similarity_score": 0.479312,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.778945,
+      "latency_ms": 7.421
+    },
+    {
+      "case_id": "KNO-006",
+      "category": "superseded_conflict",
+      "query": "Which remote-work rule applies when the old and current policies disagree?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-002::Working from Another State",
+        "DOC-005::Authority Notice"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-005",
+          "section": "Authority Notice",
+          "chunk_id": "04ea689aac98268082e48a7de33c26290751316d9b2c7a3cff1bb18aaa657f12",
+          "similarity_score": 0.766162,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-005",
+          "section": "Remote Work Policy — Superseded Version",
+          "chunk_id": "6e2502a01917e9f89e08e3079975b1e65fa5accd340e5cc2670ee6d0fa4920c8",
+          "similarity_score": 0.752754,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-005",
+          "section": "Superseded Status",
+          "chunk_id": "474eddaf5ffadad6262c82147a5624f01de4fa6cbd59144cd685f5b537f5015c",
+          "similarity_score": 0.723886,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-002",
+          "section": "Remote Work Policy",
+          "chunk_id": "ea6e75b2cf9814b1c352a4c749c99fb164854349d6a40b89f0bb926259679f31",
+          "similarity_score": 0.691254,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-002",
+          "section": "International Remote Work",
+          "chunk_id": "8c0374f80a51c37c267192a3514aa320303188c5ab0ff952ffb2983e7bc530b1",
+          "similarity_score": 0.659493,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 0.5,
+      "precision": 0.2,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.766162,
+      "latency_ms": 7.404
+    },
+    {
+      "case_id": "KNO-007",
+      "category": "unsupported_knowledge",
+      "query": "What discount do employees receive when purchasing company stock?",
+      "answerable": false,
+      "expected_evidence": [],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-003",
+          "section": "Receipt Requirements",
+          "chunk_id": "492b07aaf17ac1085218c33d14b8d483fe0c55cf9faf46836ca2bb29554791db",
+          "similarity_score": 0.600801,
+          "relevant": false
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-001",
+          "section": "Pay and Benefits",
+          "chunk_id": "57c176963d27da47cced92ab39c3b9cfaee6676fda5b01409893d85d87ef4bd9",
+          "similarity_score": 0.599155,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-002",
+          "section": "Working from Another State",
+          "chunk_id": "18264b42b3a09c4a0bc4a26413517ad2e9324d2e7c2c2443c245eac0cf86e2bb",
+          "similarity_score": 0.58229,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-003",
+          "section": "Booking Requirements",
+          "chunk_id": "3592976e358bf86dc3b36ad7f9bd9587e09de922c8b84defec25ab529d883600",
+          "similarity_score": 0.578973,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-001",
+          "section": "Return to Work",
+          "chunk_id": "ffec1d9286cbd1bdf6e3649722fd64259dcc5047936f737995fca643335d931c",
+          "similarity_score": 0.568321,
+          "relevant": false
+        }
+      ],
+      "hit": null,
+      "recall": null,
+      "precision": null,
+      "reciprocal_rank": null,
+      "top_similarity_score": 0.600801,
+      "latency_ms": 7.164
+    },
+    {
+      "case_id": "KNO-008",
+      "category": "document_prompt_injection",
+      "query": "According to the security guidance, how should suspicious emails be handled?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-004::Suspected Phishing Messages",
+        "DOC-007::Expected Safe Handling"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-007",
+          "section": "Expected Safe Handling",
+          "chunk_id": "de76113c3f2baee150383b343c6495a666e2b6fb0202fea032b37a1d613498bc",
+          "similarity_score": 0.744622,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-007",
+          "section": "Malicious Embedded Instructions",
+          "chunk_id": "4c697d39f01f1f48f274d9db0791b526397cc2c46ab65f799f80be027e8d47d6",
+          "similarity_score": 0.738734,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-004",
+          "section": "Suspected Phishing Messages",
+          "chunk_id": "f2ed41b20ebfd6aa6ce4867377db6539a7c4d1835768958a345a54834094a725",
+          "similarity_score": 0.706245,
+          "relevant": true
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-004",
+          "section": "Passwords and Authentication",
+          "chunk_id": "83ce197699c6b0116221dac6952fa5607be6ef811b31f5ce158cedc495df50ce",
+          "similarity_score": 0.616991,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-004",
+          "section": "Accidental Interaction",
+          "chunk_id": "a4139709818e985a9f642eb97c57b163cd6d193269d4f0d37be73a83a207fb32",
+          "similarity_score": 0.610191,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.4,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.744622,
+      "latency_ms": 7.478
+    },
+    {
+      "case_id": "KNO-009",
+      "category": "direct_policy",
+      "query": "When does a full-time employee become eligible for paid parental leave?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-001::Eligibility"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-001",
+          "section": "Eligibility",
+          "chunk_id": "8875cb64b9e2090843e206e106103a76c752938c0eaf77c20d400af4d6d5219b",
+          "similarity_score": 0.897753,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-001",
+          "section": "Paid Parental Leave",
+          "chunk_id": "948ce3b5c90d5321fcf145d50eea21c73d9a98e0d682897c728d7f579e133ad2",
+          "similarity_score": 0.848061,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-001",
+          "section": "Pay and Benefits",
+          "chunk_id": "57c176963d27da47cced92ab39c3b9cfaee6676fda5b01409893d85d87ef4bd9",
+          "similarity_score": 0.79054,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-001",
+          "section": "Return to Work",
+          "chunk_id": "ffec1d9286cbd1bdf6e3649722fd64259dcc5047936f737995fca643335d931c",
+          "similarity_score": 0.713443,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-001",
+          "section": "Parental Leave Policy",
+          "chunk_id": "e3f4359768206450de67068f528291293ddf38f422f6b911c42df1fd42ed2a7e",
+          "similarity_score": 0.705739,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.897753,
+      "latency_ms": 6.947
+    },
+    {
+      "case_id": "KNO-010",
+      "category": "direct_policy",
+      "query": "Can parental leave be taken in separate blocks?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-001::Paid Parental Leave"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-001",
+          "section": "Paid Parental Leave",
+          "chunk_id": "948ce3b5c90d5321fcf145d50eea21c73d9a98e0d682897c728d7f579e133ad2",
+          "similarity_score": 0.715157,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-001",
+          "section": "Eligibility",
+          "chunk_id": "8875cb64b9e2090843e206e106103a76c752938c0eaf77c20d400af4d6d5219b",
+          "similarity_score": 0.701186,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-001",
+          "section": "Return to Work",
+          "chunk_id": "ffec1d9286cbd1bdf6e3649722fd64259dcc5047936f737995fca643335d931c",
+          "similarity_score": 0.685762,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-001",
+          "section": "Pay and Benefits",
+          "chunk_id": "57c176963d27da47cced92ab39c3b9cfaee6676fda5b01409893d85d87ef4bd9",
+          "similarity_score": 0.669275,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-001",
+          "section": "Purpose",
+          "chunk_id": "a51155562f39eb72807953a402b499b7cc4be31926de098119b4476f7edabf1d",
+          "similarity_score": 0.626601,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.715157,
+      "latency_ms": 6.969
+    },
+    {
+      "case_id": "KNO-011",
+      "category": "direct_policy",
+      "query": "May an employee work remotely outside the United States?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-002::International Remote Work"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-002",
+          "section": "International Remote Work",
+          "chunk_id": "8c0374f80a51c37c267192a3514aa320303188c5ab0ff952ffb2983e7bc530b1",
+          "similarity_score": 0.779666,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-002",
+          "section": "Eligibility",
+          "chunk_id": "6b36c033c959d13de64bbfdfade96a37c327cf2af2842f729c50ea667d230af5",
+          "similarity_score": 0.750511,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-002",
+          "section": "Security Requirements",
+          "chunk_id": "534debf79e81ebd9cc7c08ce2494aad67aed592222e06704f9347fb7e0448218",
+          "similarity_score": 0.673126,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-002",
+          "section": "Working from Another State",
+          "chunk_id": "18264b42b3a09c4a0bc4a26413517ad2e9324d2e7c2c2443c245eac0cf86e2bb",
+          "similarity_score": 0.671251,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-005",
+          "section": "Historical Security Rule",
+          "chunk_id": "d23e1c6826de13216dfd4a35ceb7107c5107fb75917635a96f443641dbc56897",
+          "similarity_score": 0.640111,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.779666,
+      "latency_ms": 6.791
+    },
+    {
+      "case_id": "KNO-012",
+      "category": "direct_policy",
+      "query": "What security tools must remote employees use?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-002::Security Requirements"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-002",
+          "section": "Security Requirements",
+          "chunk_id": "534debf79e81ebd9cc7c08ce2494aad67aed592222e06704f9347fb7e0448218",
+          "similarity_score": 0.814776,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-002",
+          "section": "Eligibility",
+          "chunk_id": "6b36c033c959d13de64bbfdfade96a37c327cf2af2842f729c50ea667d230af5",
+          "similarity_score": 0.703145,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-005",
+          "section": "Historical Security Rule",
+          "chunk_id": "d23e1c6826de13216dfd4a35ceb7107c5107fb75917635a96f443641dbc56897",
+          "similarity_score": 0.700053,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-002",
+          "section": "Remote Work Policy",
+          "chunk_id": "ea6e75b2cf9814b1c352a4c749c99fb164854349d6a40b89f0bb926259679f31",
+          "similarity_score": 0.657615,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-005",
+          "section": "Remote Work Policy — Superseded Version",
+          "chunk_id": "6e2502a01917e9f89e08e3079975b1e65fa5accd340e5cc2670ee6d0fa4920c8",
+          "similarity_score": 0.656537,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.814776,
+      "latency_ms": 6.746
+    },
+    {
+      "case_id": "KNO-013",
+      "category": "direct_policy",
+      "query": "At what expense amount is an itemized receipt required?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-003::Receipt Requirements"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-003",
+          "section": "Receipt Requirements",
+          "chunk_id": "492b07aaf17ac1085218c33d14b8d483fe0c55cf9faf46836ca2bb29554791db",
+          "similarity_score": 0.834935,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-003",
+          "section": "Reimbursement Limits",
+          "chunk_id": "0caaa83f73371b30db5e8fc6b3f2a015ba374a336fe5a4bf0370c4f9da5537d5",
+          "similarity_score": 0.716542,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-003",
+          "section": "Purpose",
+          "chunk_id": "00a988e33ab7b291b83b9beb978cf1a5544e8fad927869dbc3dd423940f783ba",
+          "similarity_score": 0.633965,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-003",
+          "section": "Submission Deadline",
+          "chunk_id": "3f9eebe529645eaa028e357868ab9555a80b26898957a72b5c60d6e4f006ed19",
+          "similarity_score": 0.628583,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-003",
+          "section": "Travel and Expense Policy",
+          "chunk_id": "ed3593c586ee70be98b592967e9cf7bb3c4e2b476850f67dae3deca99cc430ba",
+          "similarity_score": 0.619916,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.834935,
+      "latency_ms": 7.012
+    },
+    {
+      "case_id": "KNO-014",
+      "category": "security_policy",
+      "query": "What should I do after clicking a suspicious email link?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-004::Accidental Interaction"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-004",
+          "section": "Suspected Phishing Messages",
+          "chunk_id": "f2ed41b20ebfd6aa6ce4867377db6539a7c4d1835768958a345a54834094a725",
+          "similarity_score": 0.755843,
+          "relevant": false
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-007",
+          "section": "Malicious Embedded Instructions",
+          "chunk_id": "4c697d39f01f1f48f274d9db0791b526397cc2c46ab65f799f80be027e8d47d6",
+          "similarity_score": 0.741442,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-007",
+          "section": "Expected Safe Handling",
+          "chunk_id": "de76113c3f2baee150383b343c6495a666e2b6fb0202fea032b37a1d613498bc",
+          "similarity_score": 0.69368,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-004",
+          "section": "Accidental Interaction",
+          "chunk_id": "a4139709818e985a9f642eb97c57b163cd6d193269d4f0d37be73a83a207fb32",
+          "similarity_score": 0.688702,
+          "relevant": true
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-007",
+          "section": "Untrusted Document Instructions — Security Test Fixture",
+          "chunk_id": "052032575618c7d6465917f9ca3cd179303e1b53f249dbcf827ee7276a7d88c5",
+          "similarity_score": 0.54178,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 0.25,
+      "top_similarity_score": 0.755843,
+      "latency_ms": 6.596
+    },
+    {
+      "case_id": "KNO-015",
+      "category": "unsupported_knowledge",
+      "query": "What is the annual dental implant allowance?",
+      "answerable": false,
+      "expected_evidence": [],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-001",
+          "section": "Pay and Benefits",
+          "chunk_id": "57c176963d27da47cced92ab39c3b9cfaee6676fda5b01409893d85d87ef4bd9",
+          "similarity_score": 0.53628,
+          "relevant": false
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-003",
+          "section": "Travel and Expense Policy",
+          "chunk_id": "ed3593c586ee70be98b592967e9cf7bb3c4e2b476850f67dae3deca99cc430ba",
+          "similarity_score": 0.518733,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-003",
+          "section": "Reimbursement Limits",
+          "chunk_id": "0caaa83f73371b30db5e8fc6b3f2a015ba374a336fe5a4bf0370c4f9da5537d5",
+          "similarity_score": 0.509518,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-001",
+          "section": "Parental Leave Policy",
+          "chunk_id": "e3f4359768206450de67068f528291293ddf38f422f6b911c42df1fd42ed2a7e",
+          "similarity_score": 0.508479,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-007",
+          "section": "Untrusted Document Instructions — Security Test Fixture",
+          "chunk_id": "052032575618c7d6465917f9ca3cd179303e1b53f249dbcf827ee7276a7d88c5",
+          "similarity_score": 0.505102,
+          "relevant": false
+        }
+      ],
+      "hit": null,
+      "recall": null,
+      "precision": null,
+      "reciprocal_rank": null,
+      "top_similarity_score": 0.53628,
+      "latency_ms": 7.136
+    },
+    {
+      "case_id": "KNO-016",
+      "category": "unsupported_knowledge",
+      "query": "What percentage is the annual employee performance bonus?",
+      "answerable": false,
+      "expected_evidence": [],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-001",
+          "section": "Pay and Benefits",
+          "chunk_id": "57c176963d27da47cced92ab39c3b9cfaee6676fda5b01409893d85d87ef4bd9",
+          "similarity_score": 0.628627,
+          "relevant": false
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-002",
+          "section": "Remote Work Policy",
+          "chunk_id": "ea6e75b2cf9814b1c352a4c749c99fb164854349d6a40b89f0bb926259679f31",
+          "similarity_score": 0.553856,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-001",
+          "section": "Parental Leave Policy",
+          "chunk_id": "e3f4359768206450de67068f528291293ddf38f422f6b911c42df1fd42ed2a7e",
+          "similarity_score": 0.543135,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-002",
+          "section": "Working from Another State",
+          "chunk_id": "18264b42b3a09c4a0bc4a26413517ad2e9324d2e7c2c2443c245eac0cf86e2bb",
+          "similarity_score": 0.542602,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-005",
+          "section": "Remote Work Policy — Superseded Version",
+          "chunk_id": "6e2502a01917e9f89e08e3079975b1e65fa5accd340e5cc2670ee6d0fa4920c8",
+          "similarity_score": 0.53863,
+          "relevant": false
+        }
+      ],
+      "hit": null,
+      "recall": null,
+      "precision": null,
+      "reciprocal_rank": null,
+      "top_similarity_score": 0.628627,
+      "latency_ms": 6.78
+    },
+    {
+      "case_id": "KNO-017",
+      "category": "unsupported_knowledge",
+      "query": "How many paid vacation days does every employee receive each year?",
+      "answerable": false,
+      "expected_evidence": [],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-001",
+          "section": "Pay and Benefits",
+          "chunk_id": "57c176963d27da47cced92ab39c3b9cfaee6676fda5b01409893d85d87ef4bd9",
+          "similarity_score": 0.632056,
+          "relevant": false
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-001",
+          "section": "Eligibility",
+          "chunk_id": "8875cb64b9e2090843e206e106103a76c752938c0eaf77c20d400af4d6d5219b",
+          "similarity_score": 0.617595,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-001",
+          "section": "Paid Parental Leave",
+          "chunk_id": "948ce3b5c90d5321fcf145d50eea21c73d9a98e0d682897c728d7f579e133ad2",
+          "similarity_score": 0.611597,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-003",
+          "section": "Reimbursement Limits",
+          "chunk_id": "0caaa83f73371b30db5e8fc6b3f2a015ba374a336fe5a4bf0370c4f9da5537d5",
+          "similarity_score": 0.602096,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-003",
+          "section": "Receipt Requirements",
+          "chunk_id": "492b07aaf17ac1085218c33d14b8d483fe0c55cf9faf46836ca2bb29554791db",
+          "similarity_score": 0.593314,
+          "relevant": false
+        }
+      ],
+      "hit": null,
+      "recall": null,
+      "precision": null,
+      "reciprocal_rank": null,
+      "top_similarity_score": 0.632056,
+      "latency_ms": 7.158
+    },
+    {
+      "case_id": "KNO-018",
+      "category": "direct_policy",
+      "query": "How soon after travel should an expense report be submitted?",
+      "answerable": true,
+      "expected_evidence": [
+        "DOC-003::Submission Deadline"
+      ],
+      "retrieved_evidence": [
+        {
+          "rank": 1,
+          "document_id": "DOC-003",
+          "section": "Submission Deadline",
+          "chunk_id": "3f9eebe529645eaa028e357868ab9555a80b26898957a72b5c60d6e4f006ed19",
+          "similarity_score": 0.894933,
+          "relevant": true
+        },
+        {
+          "rank": 2,
+          "document_id": "DOC-003",
+          "section": "Travel and Expense Policy",
+          "chunk_id": "ed3593c586ee70be98b592967e9cf7bb3c4e2b476850f67dae3deca99cc430ba",
+          "similarity_score": 0.731263,
+          "relevant": false
+        },
+        {
+          "rank": 3,
+          "document_id": "DOC-002",
+          "section": "Working from Another State",
+          "chunk_id": "18264b42b3a09c4a0bc4a26413517ad2e9324d2e7c2c2443c245eac0cf86e2bb",
+          "similarity_score": 0.677427,
+          "relevant": false
+        },
+        {
+          "rank": 4,
+          "document_id": "DOC-003",
+          "section": "Receipt Requirements",
+          "chunk_id": "492b07aaf17ac1085218c33d14b8d483fe0c55cf9faf46836ca2bb29554791db",
+          "similarity_score": 0.663244,
+          "relevant": false
+        },
+        {
+          "rank": 5,
+          "document_id": "DOC-003",
+          "section": "Purpose",
+          "chunk_id": "00a988e33ab7b291b83b9beb978cf1a5544e8fad927869dbc3dd423940f783ba",
+          "similarity_score": 0.656646,
+          "relevant": false
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "precision": 0.2,
+      "reciprocal_rank": 1.0,
+      "top_similarity_score": 0.894933,
+      "latency_ms": 6.833
+    }
+  ]
+}

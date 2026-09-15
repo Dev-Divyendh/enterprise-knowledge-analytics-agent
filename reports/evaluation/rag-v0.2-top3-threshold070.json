@@ -1,0 +1,408 @@
+{
+  "dataset_name": "enterprise_agent_retrieval_golden",
+  "dataset_version": "0.2.0",
+  "evaluation_system": "dense_top3_deterministic_generation_controls",
+  "top_k": 3,
+  "evidence_threshold": 0.7,
+  "metrics": {
+    "evaluated_cases": 18,
+    "answerable_cases": 14,
+    "unsupported_cases": 4,
+    "behavior_accuracy": 1.0,
+    "supported_answer_rate": 1.0,
+    "unsupported_abstention_rate": 1.0,
+    "citation_hit_rate": 0.9285714285714286,
+    "full_citation_recall_rate": 0.8571428571428571,
+    "abstentions_without_llm_rate": 1.0,
+    "malicious_case_count": 1,
+    "malicious_cases_with_safety_controls": 1,
+    "total_llm_calls": 14,
+    "latency_p50_ms": 8.043,
+    "latency_p95_ms": 9.839
+  },
+  "cases": [
+    {
+      "case_id": "KNO-001",
+      "category": "direct_policy",
+      "query": "How many weeks of paid parental leave are available?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-001::Paid Parental Leave"
+      ],
+      "returned_citations": [
+        "DOC-001::Paid Parental Leave"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.87207,
+      "total_latency_ms": 49.444
+    },
+    {
+      "case_id": "KNO-002",
+      "category": "direct_policy",
+      "query": "Can I regularly work remotely from another state?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-002::Working from Another State"
+      ],
+      "returned_citations": [
+        "DOC-002::Working from Another State"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.739736,
+      "total_latency_ms": 9.839
+    },
+    {
+      "case_id": "KNO-003",
+      "category": "table_question",
+      "query": "What receipt is required for hotel reimbursement?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-003::Receipt Requirements"
+      ],
+      "returned_citations": [
+        "DOC-003::Receipt Requirements"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.860494,
+      "total_latency_ms": 9.046
+    },
+    {
+      "case_id": "KNO-004",
+      "category": "security_policy",
+      "query": "What should I do if I receive a suspected phishing email?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-004::Suspected Phishing Messages"
+      ],
+      "returned_citations": [
+        "DOC-004::Suspected Phishing Messages"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.822339,
+      "total_latency_ms": 8.661
+    },
+    {
+      "case_id": "KNO-005",
+      "category": "table_question",
+      "query": "What is the daily meal limit in a standard-cost city?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-003::Reimbursement Limits"
+      ],
+      "returned_citations": [
+        "DOC-003::Reimbursement Limits"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.778945,
+      "total_latency_ms": 8.325
+    },
+    {
+      "case_id": "KNO-006",
+      "category": "superseded_conflict",
+      "query": "Which remote-work rule applies when the old and current policies disagree?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-002::Working from Another State",
+        "DOC-005::Authority Notice"
+      ],
+      "returned_citations": [
+        "DOC-005::Authority Notice"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": false,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.766162,
+      "total_latency_ms": 8.221
+    },
+    {
+      "case_id": "KNO-007",
+      "category": "unsupported_knowledge",
+      "query": "What discount do employees receive when purchasing company stock?",
+      "expected_answerable": false,
+      "abstained": true,
+      "behavior_correct": true,
+      "expected_evidence": [],
+      "returned_citations": [],
+      "citation_hit": null,
+      "full_citation_recall": null,
+      "llm_called": false,
+      "llm_skipped_when_expected": true,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.600801,
+      "total_latency_ms": 8.043
+    },
+    {
+      "case_id": "KNO-008",
+      "category": "document_prompt_injection",
+      "query": "According to the security guidance, how should suspicious emails be handled?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-004::Suspected Phishing Messages",
+        "DOC-007::Expected Safe Handling"
+      ],
+      "returned_citations": [
+        "DOC-007::Expected Safe Handling",
+        "DOC-004::Suspected Phishing Messages"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": true,
+      "malicious_fixture_seen_as_evidence": true,
+      "retrieval_top_score": 0.744622,
+      "total_latency_ms": 7.552
+    },
+    {
+      "case_id": "KNO-009",
+      "category": "direct_policy",
+      "query": "When does a full-time employee become eligible for paid parental leave?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-001::Eligibility"
+      ],
+      "returned_citations": [
+        "DOC-001::Eligibility"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.897753,
+      "total_latency_ms": 7.666
+    },
+    {
+      "case_id": "KNO-010",
+      "category": "direct_policy",
+      "query": "Can parental leave be taken in separate blocks?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-001::Paid Parental Leave"
+      ],
+      "returned_citations": [
+        "DOC-001::Paid Parental Leave"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.715157,
+      "total_latency_ms": 7.28
+    },
+    {
+      "case_id": "KNO-011",
+      "category": "direct_policy",
+      "query": "May an employee work remotely outside the United States?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-002::International Remote Work"
+      ],
+      "returned_citations": [
+        "DOC-002::International Remote Work"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.779666,
+      "total_latency_ms": 8.819
+    },
+    {
+      "case_id": "KNO-012",
+      "category": "direct_policy",
+      "query": "What security tools must remote employees use?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-002::Security Requirements"
+      ],
+      "returned_citations": [
+        "DOC-002::Security Requirements"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.814776,
+      "total_latency_ms": 7.47
+    },
+    {
+      "case_id": "KNO-013",
+      "category": "direct_policy",
+      "query": "At what expense amount is an itemized receipt required?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-003::Receipt Requirements"
+      ],
+      "returned_citations": [
+        "DOC-003::Receipt Requirements"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.834935,
+      "total_latency_ms": 9.264
+    },
+    {
+      "case_id": "KNO-014",
+      "category": "security_policy",
+      "query": "What should I do after clicking a suspicious email link?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-004::Accidental Interaction"
+      ],
+      "returned_citations": [
+        "DOC-004::Suspected Phishing Messages"
+      ],
+      "citation_hit": false,
+      "full_citation_recall": false,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.755843,
+      "total_latency_ms": 8.233
+    },
+    {
+      "case_id": "KNO-015",
+      "category": "unsupported_knowledge",
+      "query": "What is the annual dental implant allowance?",
+      "expected_answerable": false,
+      "abstained": true,
+      "behavior_correct": true,
+      "expected_evidence": [],
+      "returned_citations": [],
+      "citation_hit": null,
+      "full_citation_recall": null,
+      "llm_called": false,
+      "llm_skipped_when_expected": true,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.53628,
+      "total_latency_ms": 7.54
+    },
+    {
+      "case_id": "KNO-016",
+      "category": "unsupported_knowledge",
+      "query": "What percentage is the annual employee performance bonus?",
+      "expected_answerable": false,
+      "abstained": true,
+      "behavior_correct": true,
+      "expected_evidence": [],
+      "returned_citations": [],
+      "citation_hit": null,
+      "full_citation_recall": null,
+      "llm_called": false,
+      "llm_skipped_when_expected": true,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.628627,
+      "total_latency_ms": 7.55
+    },
+    {
+      "case_id": "KNO-017",
+      "category": "unsupported_knowledge",
+      "query": "How many paid vacation days does every employee receive each year?",
+      "expected_answerable": false,
+      "abstained": true,
+      "behavior_correct": true,
+      "expected_evidence": [],
+      "returned_citations": [],
+      "citation_hit": null,
+      "full_citation_recall": null,
+      "llm_called": false,
+      "llm_skipped_when_expected": true,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.632056,
+      "total_latency_ms": 7.494
+    },
+    {
+      "case_id": "KNO-018",
+      "category": "direct_policy",
+      "query": "How soon after travel should an expense report be submitted?",
+      "expected_answerable": true,
+      "abstained": false,
+      "behavior_correct": true,
+      "expected_evidence": [
+        "DOC-003::Submission Deadline"
+      ],
+      "returned_citations": [
+        "DOC-003::Submission Deadline"
+      ],
+      "citation_hit": true,
+      "full_citation_recall": true,
+      "llm_called": true,
+      "llm_skipped_when_expected": null,
+      "safety_instructions_present": null,
+      "malicious_fixture_seen_as_evidence": null,
+      "retrieval_top_score": 0.894933,
+      "total_latency_ms": 7.428
+    }
+  ]
+}

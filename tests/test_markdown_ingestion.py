@@ -20,7 +20,12 @@ def test_sha256_is_stable() -> None:
 def test_markdown_reader_preserves_sections(tmp_path: Path) -> None:
     source = tmp_path / "policy.md"
     source.write_text(
-        "# Leave Policy\n\n## Paid Leave\n\nEligible employees receive 12 weeks of paid leave.\n",
+        (
+            "# Leave Policy\n\n"
+            "Document ID: DOC-001\n\n"
+            "## Paid Leave\n\n"
+            "Eligible employees receive 12 weeks of paid leave.\n"
+        ),
         encoding="utf-8",
     )
 
@@ -30,9 +35,11 @@ def test_markdown_reader_preserves_sections(tmp_path: Path) -> None:
     assert document.content_hash == calculate_sha256(source.read_bytes())
     assert [element.element_type for element in document.elements] == [
         ElementType.TITLE,
+        ElementType.PARAGRAPH,
         ElementType.HEADING,
         ElementType.PARAGRAPH,
     ]
+    assert document.elements[1].text == "Document ID: DOC-001"
     assert document.elements[-1].section_path == [
         "Leave Policy",
         "Paid Leave",
@@ -50,3 +57,34 @@ def test_markdown_reader_rejects_wrong_type(tmp_path: Path) -> None:
 def test_markdown_reader_rejects_missing_file(tmp_path: Path) -> None:
     with pytest.raises(DocumentValidationError, match="does not exist"):
         read_markdown_document(tmp_path / "missing.md")
+
+
+def test_markdown_reader_extracts_document_id(tmp_path: Path) -> None:
+    document_path = tmp_path / "remote-work.md"
+    document_path.write_text(
+        (
+            "# Remote Work Policy\n\n"
+            "Document ID: DOC-042\n\n"
+            "## Rule\n\n"
+            "Advance approval is required."
+        ),
+        encoding="utf-8",
+    )
+
+    document = read_markdown_document(document_path)
+
+    assert document.metadata["external_id"] == "DOC-042"
+
+
+def test_markdown_reader_requires_document_id(tmp_path: Path) -> None:
+    document_path = tmp_path / "missing-id.md"
+    document_path.write_text(
+        "# Policy Without an ID\n\nPolicy content.",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(
+        DocumentValidationError,
+        match="must contain a Document ID",
+    ):
+        read_markdown_document(document_path)

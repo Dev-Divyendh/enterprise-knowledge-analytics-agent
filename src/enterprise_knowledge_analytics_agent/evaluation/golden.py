@@ -26,6 +26,7 @@ class GoldenCase(BaseModel):
     expected_behavior: str = Field(min_length=1)
 
     relevant_sources: list[str] = Field(default_factory=list)
+    relevant_sections: list[str] = Field(default_factory=list)
     required_facts: list[str] = Field(default_factory=list)
     forbidden_claims: list[str] = Field(default_factory=list)
 
@@ -53,6 +54,9 @@ class GoldenCase(BaseModel):
 
         if self.expected_route is ExpectedRoute.REFUSAL and self.refusal_reason is None:
             raise ValueError("refusal cases require a refusal reason")
+
+        if self.relevant_sections and (len(self.relevant_sections) != len(self.relevant_sources)):
+            raise ValueError("relevant sections must align one-to-one with relevant sources")
 
         return self
 

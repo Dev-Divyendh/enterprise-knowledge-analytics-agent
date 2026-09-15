@@ -7,6 +7,7 @@ from pydantic import ValidationError
 
 from enterprise_knowledge_analytics_agent.evaluation.golden import (
     ExpectedRoute,
+    GoldenCase,
     load_golden_dataset,
 )
 
@@ -56,3 +57,22 @@ def test_text_to_sql_case_requires_result_reference(tmp_path: Path) -> None:
 
     with pytest.raises(ValidationError, match="expected result reference"):
         load_golden_dataset(invalid_path)
+
+
+def test_relevant_sections_must_align_with_sources() -> None:
+    with pytest.raises(
+        ValueError,
+        match="relevant sections must align",
+    ):
+        GoldenCase(
+            id="KNO-999",
+            category="direct_policy",
+            difficulty="easy",
+            query="Test question",
+            expected_route=ExpectedRoute.POLICY_RAG,
+            relevant_sources=["DOC-001"],
+            relevant_sections=["Section One", "Section Two"],
+            required_facts=[],
+            forbidden_claims=[],
+            expected_behavior="answer_with_citations",
+        )

@@ -24,20 +24,23 @@ The system provides one controlled interface for:
 - **Finance analyst:** approved expense analytics.
 - **Administrator:** document ingestion and evaluation operations.
 
-The portfolio milestone will demonstrate these roles conceptually and through basic API
-authorization. Full enterprise identity integration is deferred.
+TThe portfolio milestone demonstrates these roles conceptually. Authentication and full
+enterprise identity integration are deferred.
 
-## Initial document corpus
+## Current interview-ready document corpus
 
 | ID | File | Format | Primary purpose |
 |---|---|---|---|
-| DOC-001 | `parental_leave_policy.md` | Markdown | Basic structured-policy ingestion |
-| DOC-002 | `remote_work_policy.pdf` | PDF | Normal PDF parsing and location restrictions |
-| DOC-003 | `travel_expense_policy.pdf` | PDF with table | Table extraction and reimbursement rules |
-| DOC-004 | `security_quick_reference_scanned.pdf` | Scanned PDF | OCR and security-policy questions |
-| DOC-005 | `remote_work_policy_superseded.pdf` | PDF | Version and outdated-policy behavior |
-| DOC-006 | `benefits_overview.md` | Markdown | Multi-document and unsupported-detail questions |
-| DOC-007 | `untrusted_document_instructions.md` | Markdown | Prompt-injection defense testing |
+| DOC-001 | `DOC-001-parental-leave-policy.md` | Markdown | Leave eligibility and duration |
+| DOC-002 | `DOC-002-remote-work-policy.md` | Markdown | Active remote-work rules |
+| DOC-003 | `DOC-003-travel-expense-policy.md` | Markdown | Receipt, limit, and deadline questions |
+| DOC-004 | `DOC-004-security-quick-reference.md` | Markdown | Phishing-response guidance |
+| DOC-005 | `DOC-005-remote-work-policy-superseded.md` | Markdown | Superseded-policy conflict behavior |
+| DOC-007 | `DOC-007-untrusted-document-instructions.md` | Markdown | Prompt-injection regression fixture |
+
+The fast portfolio milestone intentionally uses a concise Markdown corpus. PDF parsing,
+table extraction, and OCR are optional deferred enhancements and are not required for
+the evaluated RAG, Text-to-SQL, or LangGraph demonstrations.
 
 The first ingestion implementation will begin with DOC-001 and expand to the required
 PDF, table, OCR, versioning, and injection cases.
