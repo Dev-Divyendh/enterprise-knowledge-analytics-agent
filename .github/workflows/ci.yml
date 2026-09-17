@@ -48,6 +48,8 @@ jobs:
         run: uv run --frozen pyright
 
       - name: Run deterministic tests
+        env:
+          EKA_DATABASE_URL: postgresql+psycopg://ci_user:ci_password@localhost:5432/ci_placeholder
         run: >
           uv run --frozen pytest
           -m "not integration"
@@ -57,4 +59,3 @@ jobs:
       - name: Minimize uv cache
         if: always()
         run: uv cache prune --ci
-        
