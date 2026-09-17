@@ -12,12 +12,12 @@ from enterprise_knowledge_analytics_agent.api.dependencies import (
 from enterprise_knowledge_analytics_agent.persistence.database import (
     check_database_health,
 )
-from enterprise_knowledge_analytics_agent.rag.domain import RagAnswer
 from enterprise_knowledge_analytics_agent.rag.providers import LLMProvider
-from enterprise_knowledge_analytics_agent.rag.service import answer_question
 from enterprise_knowledge_analytics_agent.retrieval.embeddings import (
     EmbeddingProvider,
 )
+from enterprise_knowledge_analytics_agent.workflow.domain import WorkflowAnswer
+from enterprise_knowledge_analytics_agent.workflow.graph import run_workflow
 
 
 class QuestionRequest(BaseModel):
@@ -64,7 +64,7 @@ def health() -> HealthResponse:
 
 @app.get("/ready", response_model=ReadinessResponse)
 def readiness(engine: DatabaseEngine) -> ReadinessResponse:
-    """Report whether the API can connect to PostgreSQL."""
+    """Report whether PostgreSQL is reachable."""
 
     database_name = check_database_health(engine)
 
@@ -74,16 +74,16 @@ def readiness(engine: DatabaseEngine) -> ReadinessResponse:
     )
 
 
-@app.post("/api/v1/questions", response_model=RagAnswer)
+@app.post("/api/v1/questions", response_model=WorkflowAnswer)
 def ask_question(
     request: QuestionRequest,
     engine: DatabaseEngine,
     embedding_provider: EmbeddingDependency,
     llm_provider: LLMDependency,
-) -> RagAnswer:
-    """Answer a policy question using the grounded RAG workflow."""
+) -> WorkflowAnswer:
+    """Route one request through the controlled enterprise workflow."""
 
-    return answer_question(
+    return run_workflow(
         question=request.question,
         llm_provider=llm_provider,
         embedding_provider=embedding_provider,

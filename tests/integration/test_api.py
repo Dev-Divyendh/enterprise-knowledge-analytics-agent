@@ -1,3 +1,4 @@
+import json
 from collections.abc import Iterator, Mapping
 from pathlib import Path
 from typing import Any, Protocol, cast
@@ -7,6 +8,10 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import Engine
 
+from enterprise_knowledge_analytics_agent.analytics.service import (
+    APPROVED_ENGINEERING_QUESTION,
+    DESTRUCTIVE_REQUEST,
+)
 from enterprise_knowledge_analytics_agent.api.app import app
 from enterprise_knowledge_analytics_agent.api.dependencies import (
     get_database_engine,
@@ -17,7 +22,9 @@ from enterprise_knowledge_analytics_agent.ingestion.service import ingest_markdo
 from enterprise_knowledge_analytics_agent.persistence.database import (
     create_database_engine,
 )
-from enterprise_knowledge_analytics_agent.rag.domain import RagAnswer
+from enterprise_knowledge_analytics_agent.persistence.seed_analytics import (
+    seed_analytics_data,
+)
 from enterprise_knowledge_analytics_agent.rag.providers import (
     GenerationResult,
     LLMProvider,
@@ -29,11 +36,31 @@ from enterprise_knowledge_analytics_agent.retrieval.embeddings import (
     EmbeddingProvider,
     SentenceTransformerEmbeddingProvider,
 )
+from enterprise_knowledge_analytics_agent.workflow.domain import WorkflowAnswer
 
 pytestmark = pytest.mark.integration
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 DOC_001_PATH = REPOSITORY_ROOT / "data" / "documents" / "DOC-001-parental-leave-policy.md"
+
+APPROVED_SQL = """
+SELECT
+    d.name AS department,
+    COUNT(DISTINCT r.id) AS report_count,
+    SUM(i.amount) AS total_usd
+FROM analytics.departments AS d
+JOIN analytics.employees AS e
+  ON e.department_id = d.id
+JOIN analytics.expense_reports AS r
+  ON r.employee_id = e.id
+JOIN analytics.expense_items AS i
+  ON i.report_id = r.id
+WHERE d.name = 'Engineering'
+  AND r.status = 'paid'
+  AND r.submitted_date >= DATE '2025-01-01'
+  AND r.submitted_date < DATE '2026-01-01'
+GROUP BY d.name
+"""
 
 
 class _ApiClient(Protocol):
@@ -51,7 +78,7 @@ class _ApiClient(Protocol):
 
 
 class DeterministicLLMProvider:
-    """Predictable LLM replacement used at the FastAPI boundary."""
+    """Predictable provider supporting RAG and SQL output schemas."""
 
     def __init__(self) -> None:
         self.call_count = 0
@@ -63,17 +90,33 @@ class DeterministicLLMProvider:
         response_format: Mapping[str, Any],
     ) -> GenerationResult:
         self.call_count += 1
+        properties = response_format.get("properties")
 
-        assert "untrusted data" in system_prompt
-        assert "12 weeks" in user_prompt
-        assert response_format["type"] == "object"
+        if not isinstance(properties, dict):
+            raise AssertionError("response schema must contain properties")
+
+        if "citation_ranks" in properties:
+            assert "untrusted data" in system_prompt
+            assert "12 weeks" in user_prompt
+
+            content = json.dumps(
+                {
+                    "answer": (
+                        "Eligible employees may receive up to 12 weeks of paid parental leave."
+                    ),
+                    "citation_ranks": [1],
+                }
+            )
+        elif "sql" in properties:
+            assert "exactly one SELECT" in system_prompt
+            assert APPROVED_ENGINEERING_QUESTION in user_prompt
+
+            content = json.dumps({"sql": APPROVED_SQL})
+        else:
+            raise AssertionError("unexpected structured-output schema")
 
         return GenerationResult(
-            content=(
-                '{"answer":"Eligible employees may receive up to '
-                '12 weeks of paid parental leave.",'
-                '"citation_ranks":[1]}'
-            ),
+            content=content,
             model="deterministic-api-test-double",
             prompt_tokens=100,
             completion_tokens=20,
@@ -83,7 +126,9 @@ class DeterministicLLMProvider:
 
 @pytest.fixture(scope="module")
 def api_dependencies() -> Iterator[tuple[_ApiClient, DeterministicLLMProvider]]:
-    """Prepare the real retrieval path with a deterministic LLM."""
+    """Prepare real retrieval and SQL paths with a deterministic LLM."""
+
+    seed_analytics_data()
 
     engine = create_database_engine()
     embedding_provider = SentenceTransformerEmbeddingProvider()
@@ -116,11 +161,8 @@ def api_dependencies() -> Iterator[tuple[_ApiClient, DeterministicLLMProvider]]:
     engine.dispose()
 
 
-def test_supported_question_crosses_api_and_returns_citation(
-    api_dependencies: tuple[
-        _ApiClient,
-        DeterministicLLMProvider,
-    ],
+def test_supported_policy_question_returns_citation(
+    api_dependencies: tuple[_ApiClient, DeterministicLLMProvider],
 ) -> None:
     client, llm_provider = api_dependencies
     calls_before = llm_provider.call_count
@@ -132,8 +174,9 @@ def test_supported_question_crosses_api_and_returns_citation(
 
     assert response.status_code == 200
 
-    answer = RagAnswer.model_validate_json(response.text)
+    answer = WorkflowAnswer.model_validate_json(response.text)
 
+    assert answer.route == "policy_rag"
     assert answer.abstained is False
     assert "12 weeks" in answer.answer
     assert len(answer.citations) == 1
@@ -143,11 +186,8 @@ def test_supported_question_crosses_api_and_returns_citation(
     assert llm_provider.call_count == calls_before + 1
 
 
-def test_unsupported_question_crosses_api_and_skips_llm(
-    api_dependencies: tuple[
-        _ApiClient,
-        DeterministicLLMProvider,
-    ],
+def test_unsupported_policy_question_abstains_without_llm(
+    api_dependencies: tuple[_ApiClient, DeterministicLLMProvider],
 ) -> None:
     client, llm_provider = api_dependencies
     calls_before = llm_provider.call_count
@@ -159,10 +199,79 @@ def test_unsupported_question_crosses_api_and_skips_llm(
 
     assert response.status_code == 200
 
-    answer = RagAnswer.model_validate_json(response.text)
+    answer = WorkflowAnswer.model_validate_json(response.text)
 
+    assert answer.route == "policy_rag"
     assert answer.abstained is True
     assert answer.citations == []
     assert answer.llm_model is None
     assert "sufficient evidence" in answer.answer.lower()
+    assert llm_provider.call_count == calls_before
+
+
+def test_approved_analytics_question_returns_verified_result(
+    api_dependencies: tuple[_ApiClient, DeterministicLLMProvider],
+) -> None:
+    client, llm_provider = api_dependencies
+    calls_before = llm_provider.call_count
+
+    response = client.post(
+        "/api/v1/questions",
+        json={"question": APPROVED_ENGINEERING_QUESTION},
+    )
+
+    assert response.status_code == 200
+
+    answer = WorkflowAnswer.model_validate_json(response.text)
+
+    assert answer.route == "text_to_sql"
+    assert "4 paid expense reports" in answer.answer
+    assert "$3,250.00" in answer.answer
+    assert answer.sql is not None
+    assert answer.sql.endswith("LIMIT 100")
+    assert answer.rows[0]["department"] == "Engineering"
+    assert llm_provider.call_count == calls_before + 1
+
+
+def test_incomplete_analytics_question_returns_clarification_without_llm(
+    api_dependencies: tuple[_ApiClient, DeterministicLLMProvider],
+) -> None:
+    client, llm_provider = api_dependencies
+    calls_before = llm_provider.call_count
+
+    response = client.post(
+        "/api/v1/questions",
+        json={"question": "How much did Sales spend?"},
+    )
+
+    assert response.status_code == 200
+
+    answer = WorkflowAnswer.model_validate_json(response.text)
+
+    assert answer.route == "clarification"
+    assert "department" in answer.answer
+    assert answer.sql is None
+    assert answer.llm_model is None
+    assert llm_provider.call_count == calls_before
+
+
+def test_destructive_request_returns_refusal_without_llm(
+    api_dependencies: tuple[_ApiClient, DeterministicLLMProvider],
+) -> None:
+    client, llm_provider = api_dependencies
+    calls_before = llm_provider.call_count
+
+    response = client.post(
+        "/api/v1/questions",
+        json={"question": DESTRUCTIVE_REQUEST},
+    )
+
+    assert response.status_code == 200
+
+    answer = WorkflowAnswer.model_validate_json(response.text)
+
+    assert answer.route == "refusal"
+    assert "read-only" in answer.answer
+    assert answer.sql is None
+    assert answer.llm_model is None
     assert llm_provider.call_count == calls_before

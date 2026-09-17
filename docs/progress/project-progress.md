@@ -25,11 +25,11 @@ Last updated: 2026-09-17
 | 6 | Retrieval experiments | Partially implemented and verified | Frozen v0.2 comparison of exact dense, PostgreSQL full-text, and RRF hybrid Top-3 retrieval |
 | 7 | Grounded RAG | Partially implemented and verified | 18-case deterministic evaluation plus real Ollama prompt-injection demonstration |
 | 8 | Safe Text-to-SQL | Implemented and verified | SQLGlot validation, semantic contracts, read-only execution, controlled routing, and real Qwen verification |
-| 9 | Controlled LangGraph workflow | Planned | None |
-| 10 | FastAPI and containerized service | Partially implemented and verified | Health, readiness, and RAG question endpoints |
+| 9 | Controlled LangGraph workflow | Implemented and verified | Deterministic four-route graph with RAG, Text-to-SQL, clarification, and refusal |
+| 10 | FastAPI and containerized service | Partially implemented and verified | Unified workflow endpoint plus health and database-readiness endpoints |
 | 11 | Golden evaluation and MLflow | Partially implemented and verified | Frozen 18-case retrieval dataset and reproducible JSON reports; MLflow deferred |
 | 12 | Focused observability | Partially implemented | Scores, model/prompt versions, tokens, and selected latency values |
-| 13 | Focused testing and security | Partially implemented and verified | 65 passing tests covering RAG, retrieval, SQL safety, read-only execution, clarification, and refusal |
+| 13 | Focused testing and security | Partially implemented and verified | 90 passing tests covering retrieval, RAG, SQL safety, LangGraph routing, and API behavior |
 | 14 | CI and portfolio packaging | Planned | Existing documentation only; CI not implemented |
 
 ## Module 0 checklist
@@ -134,6 +134,30 @@ The currently verified operation answers one narrow aggregate question about pai
 Engineering expense reports in 2025. It returned four reports totaling `$3,250.00`.
 This is a controlled Text-to-SQL demonstration, not a general-purpose natural-language
 database interface.
+
+## Interview-ready Milestone 4 — controlled LangGraph workflow
+
+- [x] Install and lock LangGraph 1.2.11.
+- [x] Define a unified workflow response model.
+- [x] Implement deterministic routing for policy, analytics, clarification, and refusal.
+- [x] Route only the explicitly approved analytics operation to Text-to-SQL.
+- [x] Route incomplete analytics requests to clarification.
+- [x] Route destructive and restricted-data requests to refusal.
+- [x] Route policy questions to the existing grounded RAG service.
+- [x] Build and compile a typed LangGraph `StateGraph`.
+- [x] Add explicit start, router, execution, and end transitions.
+- [x] Verify clarification and refusal without usable model or embedding dependencies.
+- [x] Verify the policy-RAG graph branch using real retrieval and a deterministic LLM.
+- [x] Verify the Text-to-SQL graph branch using real PostgreSQL and a deterministic LLM.
+- [x] Replace the RAG-only FastAPI endpoint with the unified workflow endpoint.
+- [x] Test all four routes across the FastAPI boundary.
+- [x] Manually verify all four routes with real local providers.
+- [x] Pass the complete 90-test quality gate with 82% statement coverage.
+
+The workflow uses deterministic application routing rather than an LLM router. LangGraph
+coordinates existing services but does not replace their security boundaries. SQLGlot,
+PostgreSQL permissions, evidence thresholds, result validation, and application
+allowlists remain responsible for enforcing safety.
 
 ## First RAG vertical-slice checklist
 

@@ -198,6 +198,28 @@ general retrieval accuracy, production reliability, or scalability.
   or execute SQL.
 - Passed all 65 project tests with 81% statement coverage.
 
+### Controlled LangGraph workflow
+
+- Installed and locked LangGraph 1.2.11.
+- Defined a unified response model covering policy citations, analytics SQL and rows,
+  clarification, refusal, abstention, model identity, tokens, scores, and latency.
+- Implemented deterministic routing across `policy_rag`, `text_to_sql`,
+  `clarification`, and `refusal`.
+- Compiled an explicit `StateGraph` with one router and four terminal execution nodes.
+- Preserved existing RAG and Text-to-SQL safety boundaries instead of moving security
+  decisions into the graph framework.
+- Verified clarification and refusal branches do not access the LLM, embedding model,
+  or business-query execution.
+- Verified real retrieval and deterministic grounded generation through the RAG node.
+- Verified deterministic SQL generation, validation, and real read-only PostgreSQL
+  execution through the Text-to-SQL node.
+- Replaced the RAG-only FastAPI question endpoint with the unified workflow endpoint.
+- Verified policy, abstention, analytics, clarification, and refusal behavior across
+  the FastAPI boundary.
+- Manually verified the complete graph using local BGE-small embeddings,
+  `qwen3.5:4b`, PostgreSQL, and pgvector.
+- Passed all 90 project tests with 82% statement coverage.
+
 ## Implemented but not fully verified
 
 - Module 0 knowledge validation is deferred pending review of the project owner's
@@ -207,10 +229,10 @@ general retrieval accuracy, production reliability, or scalability.
 
 ### Planned
 
-Controlled LangGraph routing, structured logging, CI, and final portfolio packaging
-remain. The current Text-to-SQL implementation may be expanded beyond its one verified
-approved operation during later project work. Integration of hybrid retrieval into the answer path
-would require separate abstention calibration and safety verification.
+Structured logging, CI, and final portfolio packaging remain. The current Text-to-SQL
+implementation may be expanded beyond its one verified approved operation during later
+project work. Integration of hybrid retrieval into the answer path would require
+separate abstention calibration and safety verification.
 
 PDF parsing, OCR, reranking, MLflow, authentication, load testing, cloud deployment,
 and complete application containerization are optional or deferred.
@@ -225,6 +247,10 @@ subsystem is resume-eligible as a narrow safety-focused
 claim. It must not be described as unrestricted or production-scale natural-language
 database access. LangGraph, production scale, and deployment are not yet
 resume-eligible.
+
+The controlled LangGraph workflow is resume-eligible as deterministic orchestration
+across grounded RAG, safe Text-to-SQL, clarification, and refusal. It must not be
+described as an autonomous agent or as LLM-based routing.
 
 ## Recorded measurements
 
@@ -286,6 +312,14 @@ resume-eligible.
 | 2026-09-17 | Text-to-SQL focused tests | 17/17 | Routing, SQL safety, execution, and semantic validation |
 | 2026-09-17 | Total project tests | 65/65 | Complete project quality gate |
 | 2026-09-17 | Current statement coverage | 81% | 1,549 statements |
+| 2026-09-17 | LangGraph version | 1.2.11 | Controlled workflow orchestration |
+| 2026-09-17 | Real workflow RAG latency | 3,985.222 ms | Local BGE-small and qwen3.5:4b |
+| 2026-09-17 | Real workflow SQL latency | 4,177.984 ms | Local qwen3.5:4b and PostgreSQL |
+| 2026-09-17 | Clarification latency | 3.687 ms | No LLM call |
+| 2026-09-17 | Refusal latency | 3.114 ms | No LLM call |
+| 2026-09-17 | Workflow/API focused tests | 27/27 | Four routes and two executing branches |
+| 2026-09-17 | Total project tests | 90/90 | Complete project quality gate |
+| 2026-09-17 | Current statement coverage | 82% | 1,659 statements |
 
 ## Evidence limitations
 
@@ -307,7 +341,12 @@ resume-eligible.
   deterministic analytics fixture currently contains 2025 records.
 - The real Text-to-SQL demonstration is one local-model execution and does not
   establish general SQL-generation accuracy.
-- Controlled LangGraph routing is not implemented.
+- LangGraph routing is deterministic and allowlist-based; it is not an autonomous
+  planning agent or an LLM-based intent classifier.
+- The graph is compiled per workflow invocation; persistent checkpoints and
+  conversation memory are intentionally deferred.
+- LangGraph's installed dependency set includes checkpoint and LangSmith packages,
+  but this milestone does not use persistence or external tracing.
 - Structured logging and CI are not implemented.
 - The FastAPI TestClient currently emits one upstream transition warning concerning
   `httpx` and `httpx2`.
