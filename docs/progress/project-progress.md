@@ -1,6 +1,6 @@
 # Project Progress Tracker
 
-Last updated: 2026-09-15
+Last updated: 2026-09-17
 
 ## Status definitions
 
@@ -24,12 +24,12 @@ Last updated: 2026-09-15
 | 5 | Embeddings and vector indexing | Partially implemented and verified | 35 normalized BGE embeddings stored in pgvector |
 | 6 | Retrieval experiments | Partially implemented and verified | Frozen v0.2 comparison of exact dense, PostgreSQL full-text, and RRF hybrid Top-3 retrieval |
 | 7 | Grounded RAG | Partially implemented and verified | 18-case deterministic evaluation plus real Ollama prompt-injection demonstration |
-| 8 | Safe Text-to-SQL | Planned | Database and reader-role foundation only |
+| 8 | Safe Text-to-SQL | Implemented and verified | SQLGlot validation, semantic contracts, read-only execution, controlled routing, and real Qwen verification |
 | 9 | Controlled LangGraph workflow | Planned | None |
 | 10 | FastAPI and containerized service | Partially implemented and verified | Health, readiness, and RAG question endpoints |
 | 11 | Golden evaluation and MLflow | Partially implemented and verified | Frozen 18-case retrieval dataset and reproducible JSON reports; MLflow deferred |
 | 12 | Focused observability | Partially implemented | Scores, model/prompt versions, tokens, and selected latency values |
-| 13 | Focused testing and security | Partially implemented and verified | 48 passing tests; lexical and hybrid real-PostgreSQL regressions plus existing RAG safety tests |
+| 13 | Focused testing and security | Partially implemented and verified | 65 passing tests covering RAG, retrieval, SQL safety, read-only execution, clarification, and refusal |
 | 14 | CI and portfolio packaging | Planned | Existing documentation only; CI not implemented |
 
 ## Module 0 checklist
@@ -108,6 +108,33 @@ still uses dense retrieval and its cosine-based abstention threshold.
 - [x] Create the cumulative interview-question bank.
 - [x] Create and push the Module 2 Git commit.
 
+## Interview-ready Milestone 3 — safe Text-to-SQL
+
+- [x] Install and lock SQLGlot 30.18.0.
+- [x] Implement single-statement PostgreSQL `SELECT` validation.
+- [x] Restrict queries to allowlisted analytics tables and columns.
+- [x] Reject destructive SQL, multiple statements, CTEs, subqueries, wildcards,
+  restricted columns, unknown functions, excessive limits, and non-analytics schemas.
+- [x] Add a mandatory `LIMIT 100` when no limit is supplied.
+- [x] Execute validated SQL inside a read-only transaction.
+- [x] Assume the least-privilege `enterprise_agent_analytics_reader` role.
+- [x] Apply a three-second PostgreSQL statement timeout.
+- [x] Implement structured SQL generation using the existing LLM-provider interface.
+- [x] Add operation-specific semantic validation for required tables, filters,
+  aggregates, aliases, date columns, and grouping.
+- [x] Validate database-result shape and values before formatting the answer.
+- [x] Reproduce and preserve an incorrect real-model SQL query as a regression test.
+- [x] Verify the corrected workflow using local `qwen3.5:4b`.
+- [x] Return deterministic clarification for incomplete analytics questions.
+- [x] Refuse destructive and restricted-data requests without calling the LLM.
+- [x] Route unknown analytics requests to clarification instead of SQL generation.
+- [x] Pass the complete 65-test quality gate with 81% statement coverage.
+
+The currently verified operation answers one narrow aggregate question about paid
+Engineering expense reports in 2025. It returned four reports totaling `$3,250.00`.
+This is a controlled Text-to-SQL demonstration, not a general-purpose natural-language
+database interface.
+
 ## First RAG vertical-slice checklist
 
 - [x] Read and validate synthetic Markdown policy DOC-001.
@@ -132,8 +159,8 @@ still uses dense retrieval and its cosine-based abstention threshold.
 - [x] Pass the complete 35-test quality gate.
 
 The first RAG vertical slice is implemented and verified. Broader retrieval evaluation,
-lexical and hybrid retrieval, Text-to-SQL, LangGraph, and final portfolio packaging
-remain incomplete.
+lexical and hybrid retrieval and controlled Text-to-SQL are now implemented and
+verified. LangGraph orchestration and final portfolio packaging remain incomplete.
 
 ## Deferred project-wide knowledge review
 

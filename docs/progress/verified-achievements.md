@@ -1,6 +1,6 @@
 # Verified Achievements Ledger
 
-Last updated: 2026-09-15
+Last updated: 2026-09-17
 
 This ledger records only capabilities supported by execution evidence. It does not
 convert planned architecture into completed work.
@@ -39,7 +39,7 @@ convert planned architecture into completed work.
 - Executed strict Pyright checking with zero diagnostics after correcting test
   isolation.
 
-  ### Business domain and golden dataset v0
+### Business domain and golden dataset v0
 
 - Defined a synthetic enterprise policy and expense-analytics domain.
 - Created golden dataset v0.1 containing 15 routing, grounding, clarification, and
@@ -169,6 +169,35 @@ general retrieval accuracy, production reliability, or scalability.
   KNO-006 conflict evidence, and can rank malicious DOC-007 content first.
 - Passed 48 tests with 81% current coverage.
 
+### Safe Text-to-SQL milestone
+
+- Installed and locked SQLGlot 30.18.0 for PostgreSQL AST parsing and validation.
+- Implemented a narrow Text-to-SQL workflow for the approved question:
+  “How much did Engineering spend on paid expense reports in 2025?”
+- Validated exactly one `SELECT` statement and rejected writes, DDL, multiple
+  statements, CTEs, subqueries, wildcards, locking queries, `SELECT INTO`,
+  non-analytics schemas, non-allowlisted tables and columns, restricted fields,
+  unknown functions, and excessive limits.
+- Added a mandatory `LIMIT 100` when generated SQL does not provide a limit.
+- Executed approved SQL using a read-only transaction, the least-privilege
+  `enterprise_agent_analytics_reader` role, and a three-second statement timeout.
+- Added an operation-specific semantic contract requiring the correct four tables,
+  Engineering and paid-status filters, 2025 date bounds on `submitted_date`,
+  `COUNT(DISTINCT expense_reports.id)`, `SUM(expense_items.amount)`, stable result
+  aliases, and department grouping.
+- Preserved an incorrect real Qwen query using trip dates and an incomplete result
+  shape as a passing regression test.
+- Validated the database result before application-side answer formatting.
+- Verified local `qwen3.5:4b` generated safe and semantically valid SQL that returned
+  four paid Engineering reports totaling `$3,250.00` in 2025.
+- Recorded 467 prompt tokens, 134 completion tokens, and 6,572.178 milliseconds of
+  local end-to-end latency for the successful real-model run.
+- Implemented deterministic clarification for incomplete questions and refusal for
+  destructive and restricted-data requests.
+- Verified clarification and refusal paths do not call the LLM and do not generate
+  or execute SQL.
+- Passed all 65 project tests with 81% statement coverage.
+
 ## Implemented but not fully verified
 
 - Module 0 knowledge validation is deferred pending review of the project owner's
@@ -178,8 +207,9 @@ general retrieval accuracy, production reliability, or scalability.
 
 ### Planned
 
-Safe Text-to-SQL, controlled LangGraph routing, structured logging, CI, and final
-portfolio packaging remain. Integration of hybrid retrieval into the answer path
+Controlled LangGraph routing, structured logging, CI, and final portfolio packaging
+remain. The current Text-to-SQL implementation may be expanded beyond its one verified
+approved operation during later project work. Integration of hybrid retrieval into the answer path
 would require separate abstention calibration and safety verification.
 
 PDF parsing, OCR, reranking, MLflow, authentication, load testing, cloud deployment,
@@ -190,8 +220,11 @@ and complete application containerization are optional or deferred.
 
 The frozen dense-versus-lexical-versus-RRF retrieval comparison is defensible as a
 measured subsystem claim. Do not claim hybrid improved overall ranking quality or
-that it is already used by the FastAPI answer endpoint. Text-to-SQL, LangGraph,
-production scale, and deployment are not yet resume-eligible.
+that it is already used by the FastAPI answer endpoint. The controlled Text-to-SQL
+subsystem is resume-eligible as a narrow safety-focused
+claim. It must not be described as unrestricted or production-scale natural-language
+database access. LangGraph, production scale, and deployment are not yet
+resume-eligible.
 
 ## Recorded measurements
 
@@ -245,6 +278,14 @@ production scale, and deployment are not yet resume-eligible.
 | 2026-09-15 | Total project tests | 42/42 | Unit and integration tests |
 | 2026-09-15 | Current statement coverage | 81% | 1,239 statements |
 | 2026-09-15 | Total project tests | 48/48 | Lexical and hybrid unit/integration tests included |
+| 2026-09-17 | SQLGlot version | 30.18.0 | PostgreSQL AST validation |
+| 2026-09-17 | Verified Text-to-SQL result | 4 reports / $3,250.00 | Paid Engineering reports in 2025 |
+| 2026-09-17 | Real Text-to-SQL model | qwen3.5:4b | Local Ollama structured generation |
+| 2026-09-17 | Real Text-to-SQL tokens | 467 / 134 | Prompt / completion tokens |
+| 2026-09-17 | Real Text-to-SQL latency | 6,572.178 ms | Local end-to-end execution |
+| 2026-09-17 | Text-to-SQL focused tests | 17/17 | Routing, SQL safety, execution, and semantic validation |
+| 2026-09-17 | Total project tests | 65/65 | Complete project quality gate |
+| 2026-09-17 | Current statement coverage | 81% | 1,549 statements |
 
 ## Evidence limitations
 
@@ -259,15 +300,19 @@ production scale, and deployment are not yet resume-eligible.
 - The `0.70` threshold separates the current 18 cases but is not universally reliable.
 - KNO-006 has incomplete conflict-evidence recall at Top-5.
 - KNO-014 misses its expected section at Top-3 despite exceeding the threshold.
-- PostgreSQL lexical retrieval and RRF hybrid retrieval are not implemented.
-- Safe Text-to-SQL and LangGraph routing are not implemented.
+- Lexical and RRF retrieval are evaluated offline; the FastAPI answer path remains
+  dense-only.
+- Safe Text-to-SQL currently supports one explicitly allowlisted aggregate operation.
+- The v0.1 SQL golden cases referencing 2026 remain specification-only because the
+  deterministic analytics fixture currently contains 2025 records.
+- The real Text-to-SQL demonstration is one local-model execution and does not
+  establish general SQL-generation accuracy.
+- Controlled LangGraph routing is not implemented.
 - Structured logging and CI are not implemented.
 - The FastAPI TestClient currently emits one upstream transition warning concerning
   `httpx` and `httpx2`.
 - No production-readiness, deployment, security-completeness, accuracy-at-scale, or
   load-performance claim is supported.
-  - Lexical and RRF retrieval have been evaluated offline; the FastAPI answer path
-  remains dense-only. Hybrid scores cannot use the current cosine-based 0.70
+- Lexical and RRF retrieval have been evaluated offline; the FastAPI answer path
+  remains dense-only, and RRF scores cannot use the current cosine-based `0.70`
   abstention threshold.
-- OR lexical retrieval broadens candidate coverage but also returns matches for
-  unsupported queries and may rank the malicious DOC-007 fixture first.
