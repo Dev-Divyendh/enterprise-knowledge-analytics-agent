@@ -71,6 +71,7 @@ class _ApiClient(Protocol):
         url: str,
         *,
         json: object,
+        headers: Mapping[str, str] | None = None,
     ) -> httpx.Response:
         """Send one JSON POST request."""
 
@@ -274,4 +275,25 @@ def test_destructive_request_returns_refusal_without_llm(
     assert "read-only" in answer.answer
     assert answer.sql is None
     assert answer.llm_model is None
+    assert llm_provider.call_count == calls_before
+
+
+def test_api_preserves_safe_request_id(
+    api_dependencies: tuple[_ApiClient, DeterministicLLMProvider],
+) -> None:
+    client, llm_provider = api_dependencies
+    calls_before = llm_provider.call_count
+
+    response = client.post(
+        "/api/v1/questions",
+        json={"question": "How much did Sales spend?"},
+        headers={"X-Request-ID": "portfolio-request-123"},
+    )
+
+    assert response.status_code == 200
+    assert response.headers["X-Request-ID"] == "portfolio-request-123"
+
+    answer = WorkflowAnswer.model_validate_json(response.text)
+
+    assert answer.route == "clarification"
     assert llm_provider.call_count == calls_before
