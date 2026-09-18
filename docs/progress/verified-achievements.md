@@ -410,8 +410,6 @@ fully containerized.
 
 ## Implemented but not fully verified
 
-- The final documentation changes passed their local link, path, formatting, and
-  complete quality-gate review and are awaiting the documentation commit.
 - The project owner’s complete concept and interview knowledge review remains pending.
 - Final resume bullets remain pending until the knowledge review is completed.
 

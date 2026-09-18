@@ -30,7 +30,7 @@ Last updated: 2026-09-18
 | 11 | Golden evaluation and MLflow | Partially implemented and verified | Frozen 18-case RAG dataset and reproducible reports; MLflow deferred |
 | 12 | Focused observability | Implemented and verified | Structured JSON logs, request IDs, route, outcome, model, token, score, and latency fields |
 | 13 | Focused testing and security | Partially implemented and verified | 96 tests, 82% coverage, RAG and SQL safeguards; authentication and load testing deferred |
-| 14 | CI and portfolio packaging | In progress | Green GitHub Actions workflow; final documentation and evidence update in progress |
+| 14 | CI and portfolio packaging | Implemented and verified | Green GitHub Actions workflow, final README, architecture guide, security review, and reproducible evidence |
 
 ## Module 0 — repository foundation
 
@@ -255,7 +255,7 @@ SQLGlot, application allowlists, result validation, or PostgreSQL permissions.
 - [x] Update the verified-achievements ledger.
 - [x] Validate all documentation links and referenced command paths.
 - [x] Run the final complete quality gate.
-- [ ] Commit and push the final documentation.
+- [x] Commit and push the final documentation.
 - [ ] Complete the project concept walkthrough.
 - [ ] Complete the interview knowledge review.
 - [ ] Prepare final resume bullets only after the knowledge review.
@@ -327,13 +327,14 @@ These items must not be represented as implemented.
 
 ## Current blockers
 
-No implementation blocker remains.
+## Current blockers
 
-Final portfolio completion is waiting on:
+None.
 
-1. Architecture documentation.
-2. Security and limitations documentation.
-3. Verified-achievements update.
-4. Final reproduction-command review.
-5. Final quality gate and documentation commit.
-6. Concept and interview review.
+The scoped portfolio implementation is complete and verified. The remaining work is
+the separate learning and interview-preparation phase:
+
+1. Review the complete architecture and pipelines.
+2. Complete the cumulative interview-question bank.
+3. Complete the final project knowledge exam.
+4. Prepare evidence-bounded resume bullets.
