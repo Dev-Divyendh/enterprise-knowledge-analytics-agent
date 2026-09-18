@@ -1,6 +1,6 @@
 # Verified Achievements Ledger
 
-Last updated: 2026-09-17
+Last updated: 2026-09-18
 
 This ledger records only capabilities supported by execution evidence. It does not
 convert planned architecture into completed work.
@@ -9,349 +9,505 @@ convert planned architecture into completed work.
 
 ### Repository and Python foundation
 
-- Created a new Git repository on the `main` branch at
-  `enterprise-knowledge-analytics-agent`.
+- Created a Git repository on the `main` branch.
 - Installed and executed CPython 3.12.14 on macOS ARM64.
-- Initialized an installable Python package using a `src/` layout.
+- Initialized an installable package using a `src/` layout.
 - Created a project-local virtual environment using `uv`.
 - Generated and retained a reproducible `uv.lock` dependency lockfile.
-- Built and installed package version `0.1.0` in the local environment.
-- Executed the generated project command successfully.
+- Built and installed package version `0.1.0`.
+- Configured environment-prefixed settings through Pydantic Settings.
+- Added a commit-safe `.env.example`.
+- Excluded real `.env` files and common generated artifacts from Git.
 
 ### Automated quality foundation
 
-- Executed Ruff 0.16.3 with all current lint checks passing.
-- Verified Ruff formatting for all current Python files.
-- Executed Pyright 1.1.411 in strict mode with zero errors and zero warnings.
-- Executed Pytest 9.1.1 with one of one tests passing.
-- Recorded 100% coverage of the current two-statement scaffold.
-- Installed a repository pre-commit hook.
-- Executed Ruff and Pyright successfully through pre-commit.
+- Configured Ruff linting and formatting.
+- Configured Pyright in strict mode.
+- Configured Pytest with branch-aware coverage.
+- Installed repository pre-commit hooks.
+- Verified Ruff, Pyright, Pytest, coverage, and pre-commit locally.
+- Retained deterministic and integration test markers.
+- Reached a current complete local baseline of 96 passing tests with 82% statement
+  coverage.
+- Completed the current full quality gate with zero Ruff errors and zero Pyright
+  errors or warnings.
 
-### Application configuration foundation
+### Business domain and golden dataset
 
-- Installed and locked Pydantic 2.13.4 and Pydantic Settings 2.15.0.
-- Implemented environment-prefixed, typed application settings.
-- Added safe defaults and validation boundaries for request configuration.
-- Added a commit-safe `.env.example` while excluding real `.env` files.
-- Verified default loading, environment-variable parsing, Boolean and integer
-  conversion, and invalid-timeout rejection with three automated tests.
-- Executed strict Pyright checking with zero diagnostics after correcting test
-  isolation.
-
-### Business domain and golden dataset v0
-
-- Defined a synthetic enterprise policy and expense-analytics domain.
+- Defined a fictional enterprise policy and expense-analytics domain.
 - Created golden dataset v0.1 containing 15 routing, grounding, clarification, and
   refusal cases.
-- Recorded 8 policy-RAG, 3 Text-to-SQL, 2 clarification, and 2 refusal expectations.
-- Implemented strict Pydantic models with route-specific validation and duplicate-ID
-  rejection.
-- Passed four golden-dataset validation tests.
+- Recorded eight policy-RAG, three Text-to-SQL, two clarification, and two refusal
+  expectations.
+- Implemented strict Pydantic validation with route-specific requirements.
+- Rejected duplicate golden-case identifiers.
+- Created frozen policy evaluation dataset v0.2 containing 18 cases:
+  - 14 answerable cases.
+  - Four unsupported cases.
+  - Conflict-evidence cases.
+  - A malicious-document prompt-injection fixture.
 
 ### PostgreSQL and pgvector foundation
 
 - Ran PostgreSQL 17.11 and pgvector 0.8.6 locally through Docker Compose.
-- Implemented SQLAlchemy engine creation with connection pooling and stale-connection
-  checks.
-- Configured Alembic and verified four ordered migrations.
-- Created and verified six application tables in the `public` schema.
-- Created and verified four business tables in the `analytics` schema.
-- Verified PostgreSQL `tsvector` and pgvector `vector` storage types.
-- Verified migration downgrade and re-upgrade behavior before loading data.
-- Added database constraints, foreign keys, unique rules, and retrieval indexes.
+- Configured SQLAlchemy, Psycopg, connection pooling, and stale-connection checks.
+- Configured Alembic and verified ordered migrations.
+- Created six application tables in the `public` schema:
+  - `documents`
+  - `document_versions`
+  - `processing_runs`
+  - `chunks`
+  - `embeddings`
+  - `evaluation_runs`
+- Created four business tables in the `analytics` schema:
+  - `departments`
+  - `employees`
+  - `expense_reports`
+  - `expense_items`
+- Verified PostgreSQL `tsvector` and pgvector `vector` storage.
+- Added foreign keys, uniqueness constraints, check constraints, and retrieval indexes.
+- Verified migration downgrade and re-upgrade behavior.
+- Passed eight PostgreSQL foundation integration tests.
 
-### Analytics data and database security
+### Synthetic analytics data and database security
 
-- Created deterministic synthetic data containing 6 departments, 12 employees,
-  24 expense reports, and 72 expense items.
-- Verified that rerunning the seed operation preserved the same row counts.
-- Created a non-login, least-privilege analytics reader role.
-- Verified approved reads across all four analytics tables.
-- Verified that the reader cannot access `annual_salary`.
-- Verified that the reader cannot modify analytics records.
+- Created deterministic synthetic analytics data containing:
+  - Six departments.
+  - 12 employees.
+  - 24 expense reports.
+  - 72 expense items.
+- Verified seed idempotency by preserving the same counts after repeated execution.
+- Measured `$28,500.00` in total synthetic expenses.
+- Created the non-login `enterprise_agent_analytics_reader` role.
+- Granted only approved schema and table access.
+- Applied column-level employee-table permissions.
+- Verified that the role cannot read `annual_salary`.
+- Verified that the role cannot modify analytics data.
 - Verified database rejection of nonpositive expense amounts.
-- Measured total synthetic expenses of `$28,500.00`.
-- Recorded department totals ranging from `$3,250.00` for Engineering to `$6,250.00`
-  for Operations.
 
-### Module 2 automated verification
+### Document ingestion and processing
 
-- Passed eight PostgreSQL integration tests.
-- Passed all 17 current project tests in 0.76 seconds.
-- Recorded 95% statement coverage for the currently implemented code.
-- Passed Ruff formatting and linting.
-- Passed Pyright strict checking with zero diagnostics.
+- Created six original synthetic Markdown policy documents.
+- Extracted and validated unique `DOC-\d{3}` document identifiers.
+- Calculated SHA-256 content hashes.
+- Persisted document identities and active document versions.
+- Preserved document-version and chunk lineage.
+- Verified unchanged-document idempotency.
+- Implemented structure-aware Markdown chunking.
+- Persisted 35 chunks across the six-document corpus.
+- Verified that repeated unchanged ingestion does not create duplicate versions.
 
-### First grounded RAG vertical slice
+Only Markdown ingestion is currently implemented and verified.
 
-- Ingested synthetic Markdown policy DOC-001 and calculated SHA-256 hash
-  `315276f385ea810f045b170ac3c96e39e1428b5227a1b705dfa2b5ed397865be`.
-- Persisted DOC-001 as one document and one active document version containing
-  18 canonical elements.
-- Verified unchanged-document idempotency by rerunning ingestion without creating
-  a duplicate version.
-- Created and persisted seven structure-aware chunks preserving section and
-  document-version lineage.
-- Generated and stored seven normalized 384-dimensional embeddings using
-  `BAAI/bge-small-en-v1.5` version `v1.5`.
-- Verified embedding idempotency: the initial operation created seven embeddings
-  and the repeated operation created zero.
-- Implemented exact dense retrieval through PostgreSQL/pgvector.
-- Retrieved the Paid Parental Leave section at rank one with similarity `0.87207`
-  for the demonstrated supported question.
-- Integrated local `qwen3.5:4b` through a provider-independent LLM interface and
-  Ollama 0.33.3.
-- Generated the grounded answer “Up to 12 weeks of paid parental leave are
-  available.”
-- Returned an application-controlled citation to DOC-001, Parental Leave Policy,
-  section Paid Parental Leave.
-- Implemented evidence-based abstention using a provisional `0.70` retrieval
+### Embeddings and dense retrieval
+
+- Integrated `BAAI/bge-small-en-v1.5`.
+- Generated normalized 384-dimensional embeddings.
+- Persisted 35 embeddings in PostgreSQL/pgvector.
+- Verified embedding idempotency.
+- Implemented exact dense cosine retrieval over active document versions.
+- Retrieved the DOC-001 Paid Parental Leave section at rank one with similarity
+  `0.87207` for the demonstrated supported question.
+- Added a command-line path for embedding generation and dense search.
+
+### Retrieval evaluation
+
+- Implemented transparent retrieval metrics:
+  - Hit Rate@K
+  - Recall@K
+  - Precision@K
+  - Mean Reciprocal Rank
+- Generated reproducible JSON evaluation reports.
+- Measured exact dense Top-3:
+  - Hit Rate: `0.9286`
+  - Recall: `0.8929`
+  - Precision: `0.3333`
+  - MRR: `0.8929`
+- Measured exact dense Top-5:
+  - Hit Rate: `1.0000`
+  - Recall: `0.9643`
+  - Precision: `0.2143`
+  - MRR: `0.9107`
+- Preserved known retrieval limitations instead of removing difficult cases.
+- Recorded incomplete KNO-006 conflict-evidence retrieval.
+- Recorded the KNO-014 dense Top-3 miss.
+
+### Lexical and RRF hybrid retrieval
+
+- Reused the generated `chunks.search_vector` column and its GIN index.
+- Implemented PostgreSQL full-text lexical retrieval.
+- Preserved an initial multi-term AND baseline with Hit Rate@3 of `0.2143`.
+- Implemented OR-term lexical retrieval.
+- Measured lexical OR Top-3:
+  - Hit Rate: `1.0000`
+  - Recall: `1.0000`
+  - Precision: `0.4286`
+  - MRR: `0.7619`
+- Implemented Reciprocal Rank Fusion over up to ten dense and ten lexical candidates.
+- Deduplicated fused results by chunk ID.
+- Avoided direct comparison of incompatible cosine and lexical raw scores.
+- Measured RRF hybrid Top-3:
+  - Hit Rate: `1.0000`
+  - Recall: `0.9643`
+  - Precision: `0.3571`
+  - MRR: `0.8452`
+- Verified through real PostgreSQL integration that hybrid retrieval recovers KNO-014
+  within Top-3.
+- Recorded that hybrid improved Top-3 coverage but did not improve dense MRR.
+- Recorded that malicious DOC-007 content can rank first in selected retrieval modes.
+
+### Grounded RAG
+
+- Integrated local `qwen3.5:4b` through a provider-independent LLM interface.
+- Implemented structured model output validation.
+- Supplied retrieved document text as untrusted evidence.
+- Added explicit prompt instructions that prohibit following document-embedded
+  instructions.
+- Converted model-selected evidence ranks into application-controlled citations.
+- Implemented evidence-based abstention using a provisional `0.70` dense similarity
   threshold.
-- Manually verified unsupported-question abstention with no citation, no LLM model,
-  and no recorded token use.
-- Exposed health, database-readiness, and grounded question-answering endpoints
-  through FastAPI.
-- Manually verified the supported and unsupported workflows through
-  `POST /api/v1/questions`.
-- Passed deterministic integration tests proving supported citation behavior and
-  that unsupported-question abstention does not call the LLM.
-- Passed all 35 current tests with 86% statement coverage.
-- Passed Ruff linting and formatting, Pyright strict checking, and all configured
-  pre-commit hooks.
+- Verified unsupported-question abstention without an LLM call.
+- Measured deterministic Top-3 RAG behavior:
+  - Supported-answer rate: `1.0000`
+  - Unsupported abstention rate: `1.0000`
+  - Citation hit rate: `0.9286`
+  - Complete citation recall: `0.8571`
+- Verified all four unsupported golden cases abstain without calling the LLM.
+- Manually demonstrated safe behavior for a malicious-document case using local
+  `qwen3.5:4b`.
+- Returned a verified application-controlled citation to DOC-001 for the parental
+  leave example.
 
-The `0.70` abstention threshold is provisional and must be calibrated using the
-expanded golden evaluation dataset. The successful examples do not establish
-general retrieval accuracy, production reliability, or scalability.
+### Safe Text-to-SQL
 
-### Small-corpus and RAG evaluation milestone
-
-- Created and ingested six synthetic Markdown policy documents with distinct validated
-  document identifiers.
-- Persisted 35 structure-aware chunks and 35 normalized 384-dimensional
-  `BAAI/bge-small-en-v1.5` embeddings.
-- Verified unchanged-document ingestion across all six documents.
-- Created frozen golden dataset v0.2 containing 18 policy-RAG cases: 14 answerable
-  and four unsupported.
-- Implemented transparent Hit Rate@K, Recall@K, Precision@K, MRR, citation, abstention,
-  LLM-call, and latency measurements.
-- Measured exact dense Top-3 retrieval: Hit Rate 0.9286, Recall 0.8929,
-  Precision 0.3333, and MRR 0.8929.
-- Measured exact dense Top-5 retrieval: Hit Rate 1.0000, Recall 0.9643,
-  Precision 0.2143, and MRR 0.9107.
-- Measured deterministic Top-3 RAG behavior: 100% supported-answer rate, 100%
-  unsupported abstention rate, 0.9286 citation hit rate, and 0.8571 complete citation
-  recall.
-- Verified that all four unsupported cases abstained without calling the LLM.
-- Verified that the malicious DOC-007 fixture was supplied as untrusted evidence under
-  explicit application safety instructions.
-- Manually demonstrated that local `qwen3.5:4b` answered the malicious-document case
-  using safe DOC-004 evidence without following the embedded instruction.
-- Preserved two known limitations: KNO-006 retrieved only part of the required conflict
-  evidence, and KNO-014 missed its expected section at Top-3.
-- Generated reproducible dense Top-3, dense Top-5, and deterministic RAG JSON reports.
-- Passed all 42 tests with 81% statement coverage.
-
-### Lexical and hybrid retrieval comparison
-
-- Verified PostgreSQL full-text matching using the generated `chunks.search_vector`
-  and its existing GIN index.
-- Preserved the initial multi-term lexical baseline: Hit Rate@3 0.2143.
-- Measured OR-term lexical Top-3 on frozen v0.2: Hit Rate 1.0000, Recall 1.0000,
-  Precision 0.4286, MRR 0.7619.
-- Implemented RRF fusion over up to 10 dense and 10 lexical candidates, deduplicated
-  by chunk ID without comparing incompatible raw scores.
-- Measured hybrid Top-3: Hit Rate 1.0000, Recall 0.9643, Precision 0.3571,
-  MRR 0.8452.
-- Verified a real-database hybrid integration test recovers the expected KNO-014
-  section within Top-3.
-- Observed limitations: hybrid does not beat dense MRR, does not recover all
-  KNO-006 conflict evidence, and can rank malicious DOC-007 content first.
-- Passed 48 tests with 81% current coverage.
-
-### Safe Text-to-SQL milestone
-
-- Installed and locked SQLGlot 30.18.0 for PostgreSQL AST parsing and validation.
-- Implemented a narrow Text-to-SQL workflow for the approved question:
+- Installed and locked SQLGlot 30.18.0.
+- Implemented a narrow Text-to-SQL workflow for:
   “How much did Engineering spend on paid expense reports in 2025?”
-- Validated exactly one `SELECT` statement and rejected writes, DDL, multiple
-  statements, CTEs, subqueries, wildcards, locking queries, `SELECT INTO`,
-  non-analytics schemas, non-allowlisted tables and columns, restricted fields,
-  unknown functions, and excessive limits.
-- Added a mandatory `LIMIT 100` when generated SQL does not provide a limit.
-- Executed approved SQL using a read-only transaction, the least-privilege
-  `enterprise_agent_analytics_reader` role, and a three-second statement timeout.
-- Added an operation-specific semantic contract requiring the correct four tables,
-  Engineering and paid-status filters, 2025 date bounds on `submitted_date`,
-  `COUNT(DISTINCT expense_reports.id)`, `SUM(expense_items.amount)`, stable result
-  aliases, and department grouping.
-- Preserved an incorrect real Qwen query using trip dates and an incomplete result
-  shape as a passing regression test.
-- Validated the database result before application-side answer formatting.
-- Verified local `qwen3.5:4b` generated safe and semantically valid SQL that returned
-  four paid Engineering reports totaling `$3,250.00` in 2025.
-- Recorded 467 prompt tokens, 134 completion tokens, and 6,572.178 milliseconds of
-  local end-to-end latency for the successful real-model run.
-- Implemented deterministic clarification for incomplete questions and refusal for
-  destructive and restricted-data requests.
-- Verified clarification and refusal paths do not call the LLM and do not generate
-  or execute SQL.
-- Passed all 65 project tests with 81% statement coverage.
+- Required exactly one PostgreSQL `SELECT` statement.
+- Rejected:
+  - Writes and DDL.
+  - Multiple statements.
+  - CTEs.
+  - Subqueries.
+  - Wildcards.
+  - Locking statements.
+  - `SELECT INTO`.
+  - Non-analytics schemas.
+  - Non-allowlisted tables and columns.
+  - Restricted employee and merchant fields.
+  - Unknown functions.
+  - Non-literal and excessive limits.
+- Added mandatory `LIMIT 100` when the model omits a limit.
+- Added an operation-specific semantic contract requiring:
+  - The correct four tables.
+  - Engineering department filtering.
+  - Paid report-status filtering.
+  - Inclusive 2025 and exclusive 2026 date bounds.
+  - Filtering through `expense_reports.submitted_date`.
+  - `COUNT(DISTINCT expense_reports.id)`.
+  - `SUM(expense_items.amount)`.
+  - Stable result aliases.
+  - Department grouping.
+- Preserved an incorrect real-model query using trip dates as a regression test.
+- Executed validated SQL using:
+  - A read-only transaction.
+  - The least-privilege analytics reader role.
+  - A three-second statement timeout.
+  - Transaction rollback.
+- Validated result count, department, report count, and monetary type before formatting.
+- Verified local `qwen3.5:4b` produced SQL returning four reports and `$3,250.00`.
+- Recorded 467 prompt tokens and 134 completion tokens for the demonstrated SQL run.
+- Recorded `6,572.178 ms` for the standalone verified Text-to-SQL demonstration.
+- Verified clarification and refusal paths avoid both SQL generation and execution.
 
 ### Controlled LangGraph workflow
 
 - Installed and locked LangGraph 1.2.11.
-- Defined a unified response model covering policy citations, analytics SQL and rows,
-  clarification, refusal, abstention, model identity, tokens, scores, and latency.
-- Implemented deterministic routing across `policy_rag`, `text_to_sql`,
-  `clarification`, and `refusal`.
-- Compiled an explicit `StateGraph` with one router and four terminal execution nodes.
-- Preserved existing RAG and Text-to-SQL safety boundaries instead of moving security
-  decisions into the graph framework.
-- Verified clarification and refusal branches do not access the LLM, embedding model,
-  or business-query execution.
-- Verified real retrieval and deterministic grounded generation through the RAG node.
-- Verified deterministic SQL generation, validation, and real read-only PostgreSQL
-  execution through the Text-to-SQL node.
-- Replaced the RAG-only FastAPI question endpoint with the unified workflow endpoint.
-- Verified policy, abstention, analytics, clarification, and refusal behavior across
-  the FastAPI boundary.
-- Manually verified the complete graph using local BGE-small embeddings,
-  `qwen3.5:4b`, PostgreSQL, and pgvector.
-- Passed all 90 project tests with 82% statement coverage.
+- Defined a unified response model containing:
+  - Route.
+  - Answer.
+  - Abstention.
+  - Citations.
+  - SQL and rows.
+  - Retrieval score.
+  - LLM model.
+  - Token counts.
+  - Total latency.
+- Implemented deterministic routing across:
+  - `policy_rag`
+  - `text_to_sql`
+  - `clarification`
+  - `refusal`
+- Compiled an explicit typed `StateGraph`.
+- Added start, routing, execution, and terminal transitions.
+- Preserved RAG and Text-to-SQL security controls outside the graph framework.
+- Verified clarification and refusal without LLM, embedding, or business-query
+  execution.
+- Verified the RAG graph branch using real retrieval and deterministic generation.
+- Verified the Text-to-SQL graph branch using real PostgreSQL and deterministic
+  generation.
+- Manually verified all four routes using local providers.
+- Recorded the following real local workflow measurements:
+  - RAG: `3,985.222 ms`
+  - Text-to-SQL: `4,177.984 ms`
+  - Clarification without LLM: `3.687 ms`
+  - Refusal without LLM: `3.114 ms`
+
+The workflow is deterministic orchestration, not an autonomous planning agent or an
+LLM-based router.
+
+### FastAPI service
+
+- Exposed `GET /health`.
+- Exposed `GET /ready` with a real PostgreSQL health check.
+- Exposed unified `POST /api/v1/questions`.
+- Enforced strict request models.
+- Rejected unexpected request fields.
+- Limited questions to 2,000 characters.
+- Returned one unified response model for all four routes.
+- Verified policy answer, policy abstention, analytics, clarification, and refusal
+  behavior across the API boundary.
+- Verified dependency replacement with deterministic providers during integration
+  tests.
+- Verified request-ID preservation through the API.
+
+The PostgreSQL dependency is containerized through `compose.yaml`. The FastAPI
+application itself is not containerized.
+
+### Structured observability
+
+- Added a dedicated observability package.
+- Implemented machine-readable JSON logging.
+- Added context-local request ID storage.
+- Preserved safe caller-supplied `X-Request-ID` values.
+- Replaced missing or unsafe request IDs.
+- Returned `X-Request-ID` in API responses.
+- Restored request context after completion.
+- Logged request:
+  - Event.
+  - Request ID.
+  - HTTP method.
+  - Path.
+  - Status.
+  - Latency.
+- Logged workflow:
+  - Route.
+  - Outcome.
+  - Abstention.
+  - Model identity.
+  - Prompt tokens.
+  - Completion tokens.
+  - Retrieval top score.
+  - Latency.
+- Avoided logging:
+  - Full user questions.
+  - Generated SQL.
+  - Result rows.
+  - Retrieved evidence.
+  - Credentials.
+  - Database URLs.
+- Passed five focused deterministic observability tests.
+- Passed FastAPI request-ID propagation testing.
+
+### Continuous integration
+
+- Created `.github/workflows/ci.yml`.
+- Configured execution on pushes to `main` and pull requests.
+- Restricted workflow permissions to read-only repository contents.
+- Added workflow concurrency cancellation.
+- Used commit-pinned GitHub Actions.
+- Installed a pinned `uv` release.
+- Installed Python 3.12.
+- Installed locked development dependencies.
+- Ran Ruff lint.
+- Verified Ruff formatting.
+- Ran Pyright in strict mode.
+- Ran deterministic tests with coverage.
+- Excluded integration tests requiring local PostgreSQL.
+- Added a syntactically valid, non-connecting CI database URL for tests that construct
+  an engine without executing database operations.
+- Pruned the `uv` cache after execution.
+- Reproduced the CI environment locally:
+  - 70 tests passed.
+  - 26 integration tests were deselected.
+  - Deterministic-subset coverage was 67%.
+- Verified a successful GitHub-hosted Ubuntu workflow run for commit `93bacd1`.
+
+The first remote workflow run exposed the missing CI database setting. The failure was
+reproduced locally, corrected, committed, and followed by a green run.
+
+## Current complete verification baseline
+
+The latest complete local quality gate produced:
+
+```text
+96 passed
+82% statement coverage
+0 Ruff errors
+0 Pyright errors
+0 Pyright warnings
+All configured pre-commit hooks passed
+```
+
+The complete suite includes 26 real integration tests.
+
+The latest deterministic CI-equivalent run produced:
+
+```text
+70 passed
+26 integration tests deselected
+67% deterministic-subset statement coverage
+```
+
+The remote GitHub Actions workflow completed successfully.
+
+## Resume-eligible claims
+
+The following claims are supported when stated with their boundaries.
+
+### Retrieval evaluation
+
+Implemented and evaluated exact dense, PostgreSQL lexical, and RRF hybrid retrieval
+over a frozen 18-case synthetic dataset, measuring Hit Rate@K, Recall@K, Precision@K,
+and MRR.
+
+Do not claim that hybrid improved overall ranking quality. It improved Top-3 evidence
+coverage relative to dense retrieval but produced lower MRR.
+
+### Grounded RAG
+
+Implemented a grounded local RAG workflow with evidence thresholds,
+application-controlled citations, unsupported-question abstention, structured model
+output, and prompt-injection controls.
+
+Do not describe the evaluation as demonstrating general model accuracy or
+production-scale reliability.
+
+### Safe Text-to-SQL
+
+Implemented SQLGlot AST validation, schema and column allowlists, operation-specific
+semantic checks, result validation, read-only transactions, statement timeouts, and a
+least-privilege PostgreSQL role.
+
+Describe this as one controlled aggregate operation. Do not describe it as unrestricted
+natural-language database access.
+
+### Controlled LangGraph workflow
+
+Implemented deterministic LangGraph orchestration across grounded RAG, safe
+Text-to-SQL, clarification, and refusal paths.
+
+Do not describe it as an autonomous agent, multi-agent system, or LLM-based router.
+
+### Backend, observability, and CI
+
+Implemented a unified FastAPI endpoint, structured request-correlated JSON logging,
+strict type checking, deterministic and integration testing, and a remotely verified
+GitHub Actions workflow.
+
+Do not describe the service as production deployed, authenticated, load tested, or
+fully containerized.
 
 ## Implemented but not fully verified
 
-- Module 0 knowledge validation is deferred pending review of the project owner's
-  written notebook answers.
-  - Module 2 implementation is verified, but the owner’s interview knowledge check has
-  not yet been completed.
+- The final documentation changes passed their local link, path, formatting, and
+  complete quality-gate review and are awaiting the documentation commit.
+- The project owner’s complete concept and interview knowledge review remains pending.
+- Final resume bullets remain pending until the knowledge review is completed.
 
-### Planned
+## Deferred scope
 
-Structured logging, CI, and final portfolio packaging remain. The current Text-to-SQL
-implementation may be expanded beyond its one verified approved operation during later
-project work. Integration of hybrid retrieval into the answer path would require
-separate abstention calibration and safety verification.
+The following capabilities are optional or intentionally deferred:
 
-PDF parsing, OCR, reranking, MLflow, authentication, load testing, cloud deployment,
-and complete application containerization are optional or deferred.
-
-
-## Resume eligible
-
-The frozen dense-versus-lexical-versus-RRF retrieval comparison is defensible as a
-measured subsystem claim. Do not claim hybrid improved overall ranking quality or
-that it is already used by the FastAPI answer endpoint. The controlled Text-to-SQL
-subsystem is resume-eligible as a narrow safety-focused
-claim. It must not be described as unrestricted or production-scale natural-language
-database access. LangGraph, production scale, and deployment are not yet
-resume-eligible.
-
-The controlled LangGraph workflow is resume-eligible as deterministic orchestration
-across grounded RAG, safe Text-to-SQL, clarification, and refusal. It must not be
-described as an autonomous agent or as LLM-based routing.
-
-## Recorded measurements
-
-| Date | Measurement | Result | Context |
-|---|---|---:|---|
-| 2026-08-17 | Smoke tests passed | 1/1 | Generated package scaffold |
-| 2026-08-17 | Scaffold statement coverage | 100% | Two executable statements only |
-| 2026-08-17 | Smoke-test runtime | 0.02 seconds | Local Apple Silicon environment |
-| 2026-08-17 | Pyright diagnostics | 0 | Strict mode |
-| 2026-08-17 | Pre-commit checks passed | 3/3 | Ruff lint, Ruff format, Pyright |
-| 2026-08-17 | Configuration tests passed | 3/3 | Defaults, environment parsing, invalid input |
-| 2026-08-17 | Final Module 0 tests passed | 5/5 | Smoke and configuration tests |
-| 2026-08-17 | Module 0 statement coverage | 100% | 17 foundation statements |
-| 2026-08-17 | Final Module 0 test runtime | 0.11 seconds | Local Apple Silicon environment |
-| 2026-08-19 | Golden dataset cases | 15 | Version 0.1.0, specification-only |
-| 2026-08-19 | Golden dataset tests | 4/4 | Loader, routes, duplicates, SQL requirements |
-| 2026-08-19 | Total project tests | 9/9 | Module 0 and Module 1 |
-| 2026-08-19 | Project statement coverage | 93% | 74 statements, branch coverage enabled |
-| 2026-08-19 | Test-suite runtime | 0.12 seconds | Local Apple Silicon environment |
-| 2026-08-25 | PostgreSQL version | 17.11 | Docker Compose on macOS ARM64 |
-| 2026-08-25 | pgvector version | 0.8.6 | PostgreSQL extension |
-| 2026-08-25 | Application tables | 10 | 6 public and 4 analytics tables |
-| 2026-08-25 | Integration tests passed | 8/8 | Real local PostgreSQL |
-| 2026-08-25 | Total project tests passed | 17/17 | Unit and integration tests |
-| 2026-08-25 | Current statement coverage | 95% | 343 statements; not final-system coverage |
-| 2026-08-25 | Test-suite runtime | 0.76 seconds | Local Apple Silicon environment |
-| 2026-08-25 | Synthetic analytics rows | 114 | 6 departments, 12 employees, 24 reports, 72 items |
-| 2026-08-25 | Synthetic expense total | $28,500.00 | Deterministic 2025 dataset |
-| 2026-08-25 | Seed rerun counts | 6/12/24/72 | Idempotency verified |
-| 2026-09-14 | DOC-001 canonical elements | 18 | Synthetic Markdown policy |
-| 2026-09-14 | DOC-001 chunks | 7 | Structure-aware chunking |
-| 2026-09-14 | Stored DOC-001 embeddings | 7 | BGE small v1.5, 384 dimensions |
-| 2026-09-14 | Supported retrieval top score | 0.87207 | Paid Parental Leave section |
-| 2026-09-14 | Unsupported API top score | 0.530257 | Below provisional 0.70 threshold |
-| 2026-09-14 | RAG integration tests | 2/2 | Citation and abstention behavior |
-| 2026-09-14 | FastAPI integration tests | 2/2 | Real API boundary with deterministic LLM |
-| 2026-09-14 | Total project tests | 35/35 | Unit and integration tests |
-| 2026-09-14 | Current statement coverage | 86% | 936 statements; not final-system coverage |
-| 2026-09-14 | Full-suite runtime | 8.20 seconds | Local Apple Silicon environment |
-| 2026-09-15 | Frozen retrieval cases | 18 | v0.2.0: 14 answerable, 4 unsupported |
-| 2026-09-15 | Embedded corpus | 35/35 chunks | Six Markdown documents, BGE small v1.5 |
-| 2026-09-15 | Dense Hit Rate@3 | 0.9286 | Frozen v0.2 dataset |
-| 2026-09-15 | Dense Recall@3 | 0.8929 | Frozen v0.2 dataset |
-| 2026-09-15 | Dense MRR@3 | 0.8929 | Frozen v0.2 dataset |
-| 2026-09-15 | Dense Hit Rate@5 | 1.0000 | Frozen v0.2 dataset |
-| 2026-09-15 | Dense Recall@5 | 0.9643 | Frozen v0.2 dataset |
-| 2026-09-15 | Dense MRR@5 | 0.9107 | Frozen v0.2 dataset |
-| 2026-09-15 | Unsupported abstention rate | 1.0000 | Four deterministic cases |
-| 2026-09-15 | Citation hit rate | 0.9286 | Deterministic RAG Top-3 |
-| 2026-09-15 | Complete citation recall rate | 0.8571 | Deterministic RAG Top-3 |
-| 2026-09-15 | Total project tests | 42/42 | Unit and integration tests |
-| 2026-09-15 | Current statement coverage | 81% | 1,239 statements |
-| 2026-09-15 | Total project tests | 48/48 | Lexical and hybrid unit/integration tests included |
-| 2026-09-17 | SQLGlot version | 30.18.0 | PostgreSQL AST validation |
-| 2026-09-17 | Verified Text-to-SQL result | 4 reports / $3,250.00 | Paid Engineering reports in 2025 |
-| 2026-09-17 | Real Text-to-SQL model | qwen3.5:4b | Local Ollama structured generation |
-| 2026-09-17 | Real Text-to-SQL tokens | 467 / 134 | Prompt / completion tokens |
-| 2026-09-17 | Real Text-to-SQL latency | 6,572.178 ms | Local end-to-end execution |
-| 2026-09-17 | Text-to-SQL focused tests | 17/17 | Routing, SQL safety, execution, and semantic validation |
-| 2026-09-17 | Total project tests | 65/65 | Complete project quality gate |
-| 2026-09-17 | Current statement coverage | 81% | 1,549 statements |
-| 2026-09-17 | LangGraph version | 1.2.11 | Controlled workflow orchestration |
-| 2026-09-17 | Real workflow RAG latency | 3,985.222 ms | Local BGE-small and qwen3.5:4b |
-| 2026-09-17 | Real workflow SQL latency | 4,177.984 ms | Local qwen3.5:4b and PostgreSQL |
-| 2026-09-17 | Clarification latency | 3.687 ms | No LLM call |
-| 2026-09-17 | Refusal latency | 3.114 ms | No LLM call |
-| 2026-09-17 | Workflow/API focused tests | 27/27 | Four routes and two executing branches |
-| 2026-09-17 | Total project tests | 90/90 | Complete project quality gate |
-| 2026-09-17 | Current statement coverage | 82% | 1,659 statements |
+- PDF and Office-document parsing.
+- OCR.
+- Table extraction.
+- Cross-encoder reranking.
+- MLflow.
+- Authentication and authorization.
+- Rate limiting.
+- Load testing.
+- Full application containerization.
+- Cloud deployment.
+- Kubernetes.
+- Persistent LangGraph checkpoints.
+- Conversation memory.
+- External tracing.
 
 ## Evidence limitations
 
-- Markdown is the only document format implemented and verified.
-- Exact dense retrieval is evaluated only on a small synthetic 35-chunk corpus.
-- The observed latency measurements are local and do not establish production
-  performance or scalability.
-- Deterministic RAG evaluation measures application control behavior, not real-LLM
-  linguistic quality.
-- Real Qwen behavior has been manually demonstrated on selected cases, including one
-  malicious-document case, but not benchmarked across every golden case.
-- The `0.70` threshold separates the current 18 cases but is not universally reliable.
-- KNO-006 has incomplete conflict-evidence recall at Top-5.
-- KNO-014 misses its expected section at Top-3 despite exceeding the threshold.
-- Lexical and RRF retrieval are evaluated offline; the FastAPI answer path remains
-  dense-only.
-- Safe Text-to-SQL currently supports one explicitly allowlisted aggregate operation.
-- The v0.1 SQL golden cases referencing 2026 remain specification-only because the
-  deterministic analytics fixture currently contains 2025 records.
-- The real Text-to-SQL demonstration is one local-model execution and does not
-  establish general SQL-generation accuracy.
-- LangGraph routing is deterministic and allowlist-based; it is not an autonomous
-  planning agent or an LLM-based intent classifier.
-- The graph is compiled per workflow invocation; persistent checkpoints and
-  conversation memory are intentionally deferred.
-- LangGraph's installed dependency set includes checkpoint and LangSmith packages,
-  but this milestone does not use persistence or external tracing.
-- Structured logging and CI are not implemented.
-- The FastAPI TestClient currently emits one upstream transition warning concerning
-  `httpx` and `httpx2`.
-- No production-readiness, deployment, security-completeness, accuracy-at-scale, or
-  load-performance claim is supported.
-- Lexical and RRF retrieval have been evaluated offline; the FastAPI answer path
-  remains dense-only, and RRF scores cannot use the current cosine-based `0.70`
-  abstention threshold.
+- The policy corpus contains six synthetic Markdown documents and 35 chunks.
+- Markdown is the only verified ingestion format.
+- The retrieval evaluation contains 18 synthetic cases.
+- Exact dense retrieval has not been evaluated at production scale.
+- The provisional `0.70` threshold is corpus-specific and is not universally reliable.
+- KNO-006 has incomplete conflict-evidence recall.
+- KNO-014 is missed by dense retrieval at Top-3.
+- Lexical and RRF hybrid retrieval are evaluated offline but are not used by the API
+  answer path.
+- RRF scores cannot use the current cosine-based abstention threshold.
+- Malicious content can rank highly; ranking is not treated as a security boundary.
+- Deterministic RAG evaluation measures application behavior more than free-form model
+  quality.
+- Real Qwen behavior was demonstrated only on selected cases.
+- Text-to-SQL supports one explicitly approved aggregate operation.
+- The v0.1 SQL cases referencing 2026 remain specification-only because the analytics
+  fixture contains 2025 records.
+- One successful real Text-to-SQL execution does not establish general SQL-generation
+  accuracy.
+- LangGraph routing is deterministic and allowlist-based.
+- The graph is compiled per invocation.
+- Persistent checkpoints and conversation memory are deferred.
+- Installed LangGraph dependencies include checkpoint and LangSmith packages, but this
+  project does not use persistence or external tracing.
+- Operational logs do not replace metrics aggregation, alerting, or distributed
+  tracing.
+- The API has no authentication, authorization, rate limiting, or TLS termination.
+- The FastAPI application is not containerized.
+- GitHub Actions does not execute PostgreSQL integration tests.
+- Latency values were measured locally and do not establish production performance.
+- The project has not been load tested or deployed to a production environment.
+- No production-readiness, security-completeness, accuracy-at-scale, or
+  general-reliability claim is supported.
+
+## Selected recorded measurements
+
+| Date | Measurement | Result | Context |
+|---|---|---:|---|
+| 2026-08-17 | Initial smoke tests | 1/1 | Generated package scaffold |
+| 2026-08-17 | Initial coverage | 100% | Two executable scaffold statements |
+| 2026-08-19 | Golden dataset cases | 15 | Version 0.1 specification |
+| 2026-08-19 | Project tests | 9/9 | Foundation and golden-data validation |
+| 2026-08-25 | PostgreSQL version | 17.11 | Local Docker Compose |
+| 2026-08-25 | pgvector version | 0.8.6 | PostgreSQL extension |
+| 2026-08-25 | Database tables | 10 | Six public and four analytics tables |
+| 2026-08-25 | Synthetic analytics rows | 114 | 6 departments, 12 employees, 24 reports, 72 items |
+| 2026-08-25 | Synthetic expense total | $28,500.00 | Deterministic fixture |
+| 2026-09-14 | Embedded corpus | 35/35 chunks | BGE-small v1.5, 384 dimensions |
+| 2026-09-14 | Supported retrieval score | 0.87207 | DOC-001 parental-leave example |
+| 2026-09-15 | Frozen policy cases | 18 | 14 answerable and four unsupported |
+| 2026-09-15 | Dense Hit Rate@3 | 0.9286 | Frozen v0.2 |
+| 2026-09-15 | Dense Recall@3 | 0.8929 | Frozen v0.2 |
+| 2026-09-15 | Dense MRR@3 | 0.8929 | Frozen v0.2 |
+| 2026-09-15 | Lexical Hit Rate@3 | 1.0000 | OR-term PostgreSQL retrieval |
+| 2026-09-15 | Lexical MRR@3 | 0.7619 | OR-term PostgreSQL retrieval |
+| 2026-09-15 | Hybrid Hit Rate@3 | 1.0000 | RRF fusion |
+| 2026-09-15 | Hybrid Recall@3 | 0.9643 | RRF fusion |
+| 2026-09-15 | Hybrid MRR@3 | 0.8452 | RRF fusion |
+| 2026-09-15 | Unsupported abstention rate | 1.0000 | Four deterministic cases |
+| 2026-09-15 | Citation hit rate | 0.9286 | Deterministic RAG |
+| 2026-09-15 | Complete citation recall | 0.8571 | Deterministic RAG |
+| 2026-09-17 | SQLGlot version | 30.18.0 | PostgreSQL AST validation |
+| 2026-09-17 | Verified SQL result | 4 reports / $3,250.00 | Paid Engineering reports in 2025 |
+| 2026-09-17 | SQL model tokens | 467 / 134 | Prompt / completion |
+| 2026-09-17 | Standalone SQL latency | 6,572.178 ms | Local end-to-end execution |
+| 2026-09-17 | LangGraph version | 1.2.11 | Controlled orchestration |
+| 2026-09-17 | Workflow RAG latency | 3,985.222 ms | Local BGE-small and Qwen |
+| 2026-09-17 | Workflow SQL latency | 4,177.984 ms | Local Qwen and PostgreSQL |
+| 2026-09-17 | Clarification latency | 3.687 ms | No LLM |
+| 2026-09-17 | Refusal latency | 3.114 ms | No LLM |
+| 2026-09-17 | Complete project tests | 96/96 | Local full suite |
+| 2026-09-17 | Complete statement coverage | 82% | 1,726 statements |
+| 2026-09-17 | Deterministic CI tests | 70/70 | 26 integration tests excluded |
+| 2026-09-17 | CI-subset coverage | 67% | Service-free deterministic run |
+| 2026-09-17 | GitHub Actions | Passed | Commit `93bacd1`, Ubuntu runner |
